@@ -1,8 +1,9 @@
 {
-  "name": "boilerplate",
+  "name": "simple-quiz",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Quiz",
+  "author": "Edmilson Torres",
+  "email": "edmilson.torres@gmail.com",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
