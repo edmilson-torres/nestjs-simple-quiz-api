@@ -4,7 +4,8 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    Index
 } from 'typeorm'
 
 @Entity({ name: 'user' })
@@ -18,7 +19,8 @@ export class User {
     @Column()
     lastName: string
 
-    @Column({ unique: true })
+    @Column()
+    @Index({ where: '"deletedAt" IS NULL', unique: true })
     email: string
 
     @Column({ default: 'user' })
