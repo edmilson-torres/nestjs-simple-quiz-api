@@ -1,34 +1,72 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { CreateUserDto } from './dto/create-user.dto'
-import { Repository } from 'typeorm'
-import { User } from './entities/user.entity'
-import { UpdateUserDto } from './dto/update-user.dto'
 import { genSalt, hash } from 'bcryptjs'
+import {
+    BadRequestException,
+    ConflictException,
+    Inject,
+    Injectable,
+    NotFoundException
+} from '@nestjs/common'
+import { Repository } from 'typeorm'
+
+import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
+import { User } from './entities/user.entity'
+import { UserMapper } from './users.mapper'
 
 @Injectable()
 export class UsersService {
     constructor(
         @Inject('USER_REPOSITORY')
-        private userRepository: Repository<User>
+        private usersRepository: Repository<User>
     ) {}
 
     async create(payload: CreateUserDto) {
-        const userClone = { passwordHash: '123456', ...payload }
+        const userObject = await this.usersRepository.findOne({
+            where: { email: payload.email }
+        })
+        if (userObject) {
+            throw new BadRequestException('Invalid data')
+        }
 
-        const result = this.userRepository.save(userClone)
-        return result
+        const salt = await genSalt()
+        const passwordHash = await hash(payload.password, salt)
+
+        const createData: Partial<User> = UserMapper.toPersistence({
+            passwordHash,
+            ...payload
+        })
+
+        try {
+            const user = await this.usersRepository.save(createData)
+
+            return UserMapper.toResponse(user)
+        } catch (error) {
+            throw new ConflictException('Invalid Data')
+        }
     }
 
     async findAll(): Promise<User[]> {
-        return this.userRepository.find({
-            select: { id: true, firstName: true, lastName: true, email: true }
+        return this.usersRepository.find({
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                role: true
+            }
         })
     }
 
     async findOne(id: string) {
-        const user = await this.userRepository.findOne({
+        const user = await this.usersRepository.findOne({
             where: { id },
-            select: { id: true, firstName: true, lastName: true, email: true }
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                role: true
+            }
         })
 
         if (!user) {
@@ -42,49 +80,54 @@ export class UsersService {
         id: string,
         payload: UpdateUserDto
     ): Promise<Partial<User> | null> {
-        const user = await this.userRepository.findOne({
-            where: { id, deletedAt: null }
+        const user = await this.usersRepository.findOne({
+            where: { id }
         })
 
         if (!user) {
             throw new NotFoundException()
         }
 
-        let tempData: Partial<User> = {}
+        if (payload.email) {
+            const userObject = await this.usersRepository.findOne({
+                where: { email: payload.email }
+            })
 
-        tempData = { ...user, ...payload }
+            if (userObject && userObject.id !== id) {
+                throw new BadRequestException('Invalid data')
+            }
+        }
 
+        let passwordHash: string
         if (payload.password) {
             const salt = await genSalt()
-            tempData.passwordHash = await hash(payload.password, salt)
+            passwordHash = await hash(payload.password, salt)
         }
 
-        const updateData: Partial<User> = {
-            firstName: tempData.firstName,
-            lastName: tempData.lastName,
-            email: tempData.email,
-            passwordHash: tempData.passwordHash
-        }
+        const updateData: Partial<User> = UserMapper.toPersistence({
+            ...payload,
+            passwordHash
+        })
 
         try {
-            await this.userRepository.update(id, updateData)
+            await this.usersRepository.update(id, updateData)
 
-            return { id }
+            return UserMapper.toResponse({ id, ...user, ...updateData })
         } catch (error) {
             throw new Error(error)
         }
     }
 
     async remove(id: string) {
-        const user = await this.userRepository.findOne({
-            where: { id, deletedAt: null }
+        const user = await this.usersRepository.exists({
+            where: { id }
         })
 
         if (!user) {
             throw new NotFoundException()
         }
 
-        await this.userRepository.softDelete(id)
+        await this.usersRepository.softDelete(id)
         return null
     }
 }
