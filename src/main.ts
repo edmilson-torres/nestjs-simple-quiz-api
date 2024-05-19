@@ -11,7 +11,7 @@ async function bootstrap() {
     const configService = app.get(ConfigService)
     app.enableCors()
     app.use(helmet())
-    app.useGlobalPipes(new ValidationPipe())
+    app.useGlobalPipes(new ValidationPipe({ transform: true }))
 
     const config = new DocumentBuilder()
         .setTitle('Simple Quiz')
