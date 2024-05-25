@@ -2,26 +2,25 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsEmail, MinLength, MaxLength, NotContains } from 'class-validator'
 
+const stringCapitalize = (value: string) => {
+    return (
+        value.trim().charAt(0).toUpperCase() +
+        value.trim().slice(1).toLowerCase()
+    )
+}
+
 export class CreateUserDto {
     @ApiProperty()
     @MinLength(3)
     @MaxLength(250)
-    @Transform(
-        ({ value }) =>
-            value.trim().charAt(0).toUpperCase() +
-            value.trim().slice(1).toLowerCase()
-    )
+    @Transform(({ value }) => stringCapitalize(value))
     @NotContains(' ', { message: 'firstName can not contains spaces' })
     firstName: string
 
     @ApiProperty()
     @MinLength(3)
     @MaxLength(250)
-    @Transform(
-        ({ value }) =>
-            value.trim().charAt(0).toUpperCase() +
-            value.trim().slice(1).toLowerCase()
-    )
+    @Transform(({ value }) => stringCapitalize(value))
     @NotContains(' ', { message: 'lastName can not contains spaces' })
     lastName: string
 
