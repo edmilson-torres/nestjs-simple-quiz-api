@@ -1,4 +1,3 @@
-import { genSalt, hash } from 'bcryptjs'
 import {
     BadRequestException,
     ConflictException,
@@ -12,12 +11,14 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 import { UserMapper } from './users.mapper'
+import { HashService } from '../shared/hash/hash.service'
 
 @Injectable()
 export class UsersService {
     constructor(
         @Inject('USER_REPOSITORY')
-        private usersRepository: Repository<User>
+        private readonly usersRepository: Repository<User>,
+        private readonly hashing: HashService
     ) {}
 
     async create(payload: CreateUserDto) {
@@ -28,8 +29,7 @@ export class UsersService {
             throw new BadRequestException('Invalid data')
         }
 
-        const salt = await genSalt()
-        const passwordHash = await hash(payload.password, salt)
+        const passwordHash = await this.hashing.hash(payload.password)
 
         const createData: Partial<User> = UserMapper.toPersistence({
             passwordHash,
@@ -100,8 +100,7 @@ export class UsersService {
 
         let passwordHash: string
         if (payload.password) {
-            const salt = await genSalt()
-            passwordHash = await hash(payload.password, salt)
+            passwordHash = await this.hashing.hash(payload.password)
         }
 
         const updateData: Partial<User> = UserMapper.toPersistence({
