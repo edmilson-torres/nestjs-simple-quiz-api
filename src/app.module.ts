@@ -4,6 +4,7 @@ import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { UsersModule } from './users/users.module'
 import { HashModule } from './shared/hash/hash.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
     imports: [
@@ -28,7 +29,8 @@ import { HashModule } from './shared/hash/hash.module'
             }
         ]),
         UsersModule,
-        HashModule
+        HashModule,
+        AuthModule
     ],
     controllers: [],
     providers: [
