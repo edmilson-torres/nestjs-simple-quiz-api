@@ -76,6 +76,26 @@ export class UsersService {
         return user
     }
 
+    async findOneByEmail(email: string) {
+        const user = await this.usersRepository.findOne({
+            where: { email },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                role: true,
+                passwordHash: true
+            }
+        })
+
+        if (!user) {
+            throw new NotFoundException()
+        }
+
+        return user
+    }
+
     async update(
         id: string,
         payload: UpdateUserDto
