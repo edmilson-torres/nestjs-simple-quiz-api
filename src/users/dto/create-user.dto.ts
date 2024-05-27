@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsEmail, MinLength, MaxLength, NotContains } from 'class-validator'
+import {
+    IsEmail,
+    MinLength,
+    MaxLength,
+    NotContains,
+    IsStrongPassword
+} from 'class-validator'
 
 const stringCapitalize = (value: string) => {
     return (
@@ -30,6 +36,7 @@ export class CreateUserDto {
     email: string
 
     @ApiProperty()
+    @IsStrongPassword()
     @MinLength(6)
     @MaxLength(25)
     @NotContains(' ', { message: 'password can not contains spaces' })
