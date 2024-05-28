@@ -15,13 +15,14 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
-import { Role } from 'src/auth/role.enum'
+
+import { Role } from './entities/user.entity'
 import { Roles } from 'src/auth/roles.decorator'
+import { RolesGuard } from 'src/auth/guards/roles.guard'
 
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { RolesGuard } from 'src/auth/guards/roles.guard'
 
 @ApiTags('Users')
 @Controller('users')

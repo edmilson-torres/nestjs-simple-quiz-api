@@ -1,4 +1,3 @@
-import { Role } from 'src/auth/role.enum'
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -8,6 +7,11 @@ import {
     UpdateDateColumn,
     Index
 } from 'typeorm'
+
+export enum Role {
+    User = 'user',
+    Admin = 'admin'
+}
 
 @Entity({ name: 'user' })
 export class User {

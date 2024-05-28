@@ -10,11 +10,10 @@ import { Repository } from 'typeorm'
 
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { User } from './entities/user.entity'
+import { Role, User } from './entities/user.entity'
 import { UserMapper } from './users.mapper'
 import { HashService } from '../shared/hash/hash.service'
 
-import { Role } from 'src/auth/role.enum'
 import { isAdmin } from 'src/shared/isAdmin'
 
 @Injectable()

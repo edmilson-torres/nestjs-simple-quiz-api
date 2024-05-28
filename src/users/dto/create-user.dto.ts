@@ -8,8 +8,7 @@ import {
     IsStrongPassword,
     IsEnum
 } from 'class-validator'
-
-import { Role } from 'src/auth/role.enum'
+import { Role } from '../entities/user.entity'
 
 const stringCapitalize = (value: string) => {
     return (
