@@ -9,6 +9,7 @@ import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { LocalStrategy } from './strategies/local.strategy'
 import { jwtConstants } from './constants'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
     imports: [
@@ -17,11 +18,12 @@ import { jwtConstants } from './constants'
         JwtModule.register({
             global: true,
             secret: jwtConstants.secret,
-            signOptions: { expiresIn: '60s' }
+            signOptions: { expiresIn: '60h' }
         }),
         HashModule
     ],
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy]
+    providers: [AuthService, LocalStrategy, JwtStrategy],
+    exports: [AuthService]
 })
 export class AuthModule {}
