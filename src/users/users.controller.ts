@@ -9,13 +9,19 @@ import {
     HttpCode,
     HttpStatus,
     ParseUUIDPipe,
-    UseGuards
+    UseGuards,
+    Request
 } from '@nestjs/common'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
+import { Role } from 'src/auth/role.enum'
+import { Roles } from 'src/auth/roles.decorator'
+
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
+import { RolesGuard } from 'src/auth/guards/roles.guard'
 
 @ApiTags('Users')
 @Controller('users')
@@ -30,7 +36,8 @@ export class UsersController {
     }
 
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
+    @Roles(Role.Admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @ApiOperation({ summary: 'list all users' })
     @Get()
     findAll() {
@@ -38,31 +45,35 @@ export class UsersController {
     }
 
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
+    @Roles(Role.User, Role.Admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @ApiOperation({ summary: 'get user by id' })
     @Get(':id')
-    findOne(@Param('id', ParseUUIDPipe) id: string) {
-        return this.usersService.findOne(id)
+    findOne(@Request() req, @Param('id', ParseUUIDPipe) id: string) {
+        return this.usersService.findOne(id, req.user)
     }
 
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
+    @Roles(Role.User, Role.Admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @ApiOperation({ summary: 'update a user by id' })
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
     update(
+        @Request() req,
         @Param('id', ParseUUIDPipe) id: string,
         @Body() updateUserDto: UpdateUserDto
     ) {
-        return this.usersService.update(id, updateUserDto)
+        return this.usersService.update(id, updateUserDto, req.user)
     }
 
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
+    @Roles(Role.User, Role.Admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @ApiOperation({ summary: 'delete a user by id' })
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Param('id', ParseUUIDPipe) id: string) {
-        return this.usersService.remove(id)
+    remove(@Request() req, @Param('id', ParseUUIDPipe) id: string) {
+        return this.usersService.remove(id, req.user)
     }
 }

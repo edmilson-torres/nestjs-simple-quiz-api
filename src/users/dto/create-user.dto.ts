@@ -1,12 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
     IsEmail,
     MinLength,
     MaxLength,
     NotContains,
-    IsStrongPassword
+    IsStrongPassword,
+    IsEnum
 } from 'class-validator'
+
+import { Role } from 'src/auth/role.enum'
 
 const stringCapitalize = (value: string) => {
     return (
@@ -42,4 +45,8 @@ export class CreateUserDto {
     @NotContains(' ', { message: 'password can not contains spaces' })
     @Transform(({ value }) => value.trim())
     password: string
+
+    @ApiPropertyOptional()
+    @IsEnum(Role, { each: true })
+    roles?: Role[] = [Role.User]
 }

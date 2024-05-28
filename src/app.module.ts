@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
+
 import { UsersModule } from './users/users.module'
-import { HashModule } from './shared/hash/hash.module'
 import { AuthModule } from './auth/auth.module'
+import { HashModule } from './shared/hash/hash.module'
 
 @Module({
     imports: [

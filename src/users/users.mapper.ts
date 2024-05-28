@@ -17,7 +17,7 @@ export class UserMapper {
         newUser.email = user.email
         newUser.firstName = user.firstName
         newUser.lastName = user.lastName
-        newUser.role = user.role
+        newUser.roles = user.roles
 
         return this.cleanObjectFromUndefined(newUser)
     }
@@ -29,7 +29,7 @@ export class UserMapper {
         newUser.email = user.email
         newUser.firstName = user.firstName
         newUser.lastName = user.lastName
-        newUser.role = user.role
+        newUser.roles = user.roles
         newUser.passwordHash = user.passwordHash
 
         return UserMapper.cleanObjectFromUndefined(newUser)

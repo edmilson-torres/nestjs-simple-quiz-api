@@ -8,6 +8,7 @@ import { HashService } from '../shared/hash/hash.service'
 export interface UserPayload {
     sub: string
     email: string
+    roles: string[]
 }
 
 export interface UserToken {
@@ -47,7 +48,8 @@ export class AuthService {
     async login(user: Partial<User>): Promise<UserToken> {
         const payload: UserPayload = {
             sub: user.id,
-            email: user.email
+            email: user.email,
+            roles: user.roles
         }
 
         return {

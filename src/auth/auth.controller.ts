@@ -19,7 +19,8 @@ export class AuthController {
         return this.authService.login({
             id: req.user.id,
             email: data.email,
-            passwordHash
+            passwordHash,
+            roles: req.user.roles
         })
     }
 

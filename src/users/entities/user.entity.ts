@@ -1,3 +1,4 @@
+import { Role } from 'src/auth/role.enum'
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -23,8 +24,13 @@ export class User {
     @Index({ where: '"deletedAt" IS NULL', unique: true })
     email: string
 
-    @Column({ default: 'user' })
-    role: string
+    @Column({
+        type: 'enum',
+        enum: Role,
+        array: true,
+        default: [Role.User]
+    })
+    roles?: Role[]
 
     @Column()
     passwordHash: string
