@@ -62,7 +62,7 @@ export class UsersService {
         })
     }
 
-    async findOne(id: string, reqUser: UserEntity) {
+    async findOne(id: string, reqUser: Partial<UserEntity>) {
         const admin = isAdmin(reqUser.roles)
 
         if (admin || reqUser.id === id) {
@@ -109,7 +109,7 @@ export class UsersService {
     async update(
         id: string,
         payload: UpdateUserDto,
-        reqUser: UserEntity
+        reqUser: Partial<UserEntity>
     ): Promise<Partial<UserEntity> | null> {
         const admin = isAdmin(reqUser.roles)
 
@@ -160,7 +160,7 @@ export class UsersService {
         }
     }
 
-    async remove(id: string, reqUser: UserEntity) {
+    async remove(id: string, reqUser: Partial<UserEntity>) {
         const admin = isAdmin(reqUser.roles)
 
         if (admin || reqUser.id === id) {
