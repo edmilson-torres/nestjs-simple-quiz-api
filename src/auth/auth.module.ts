@@ -8,7 +8,7 @@ import { UsersModule } from '../users/users.module'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { LocalStrategy } from './strategies/local.strategy'
-import { jwtConstants } from './constants'
+import { jwtConstants } from './auth.config'
 import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
