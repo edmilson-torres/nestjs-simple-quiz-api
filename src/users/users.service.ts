@@ -14,7 +14,7 @@ import { Role, UserEntity } from './entities/user.entity'
 import { UserMapper } from './users.mapper'
 import { HashService } from '../shared/hash/hash.service'
 
-import { isAdmin } from 'src/shared/isAdmin'
+import { isAdmin } from '../shared/isAdmin'
 
 @Injectable()
 export class UsersService {

@@ -1,4 +1,4 @@
-import { Role } from 'src/users/entities/user.entity'
+import { Role } from '../users/entities/user.entity'
 
 export const isAdmin = (roles: Role[]) => {
     if (Array.isArray(roles) && roles.length === 0) return false
