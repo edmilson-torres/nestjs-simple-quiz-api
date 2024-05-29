@@ -1,4 +1,4 @@
-import { User } from './entities/user.entity'
+import { UserEntity } from './entities/user.entity'
 
 export class UserMapper {
     static cleanObjectFromUndefined(data: object) {
@@ -10,27 +10,27 @@ export class UserMapper {
             }, {})
     }
 
-    static toResponse(user: Partial<User>) {
-        const newUser = new User()
-
-        newUser.id = user.id
-        newUser.email = user.email
-        newUser.firstName = user.firstName
-        newUser.lastName = user.lastName
-        newUser.roles = user.roles
+    static toResponse(user: Partial<UserEntity>) {
+        const newUser = new UserEntity({
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            roles: user.roles
+        })
 
         return this.cleanObjectFromUndefined(newUser)
     }
 
-    static toPersistence(user: Partial<User>) {
-        const newUser = new User()
-
-        newUser.id = user.id
-        newUser.email = user.email
-        newUser.firstName = user.firstName
-        newUser.lastName = user.lastName
-        newUser.roles = user.roles
-        newUser.passwordHash = user.passwordHash
+    static toPersistence(user: Partial<UserEntity>) {
+        const newUser = new UserEntity({
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            roles: user.roles,
+            passwordHash: user.passwordHash
+        })
 
         return UserMapper.cleanObjectFromUndefined(newUser)
     }

@@ -10,7 +10,7 @@ import { Repository } from 'typeorm'
 
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { Role, User } from './entities/user.entity'
+import { Role, UserEntity } from './entities/user.entity'
 import { UserMapper } from './users.mapper'
 import { HashService } from '../shared/hash/hash.service'
 
@@ -20,7 +20,7 @@ import { isAdmin } from 'src/shared/isAdmin'
 export class UsersService {
     constructor(
         @Inject('USER_REPOSITORY')
-        private readonly usersRepository: Repository<User>,
+        private readonly usersRepository: Repository<UserEntity>,
         private readonly hashing: HashService
     ) {}
 
@@ -36,21 +36,21 @@ export class UsersService {
 
         payload.roles = [Role.User]
 
-        const createData: Partial<User> = UserMapper.toPersistence({
+        const createData: Partial<UserEntity> = UserMapper.toPersistence({
             passwordHash,
             ...payload
         })
 
         try {
-            const user = await this.usersRepository.save(createData)
+            const newUser = await this.usersRepository.save(createData)
 
-            return UserMapper.toResponse(user)
+            return new UserEntity(newUser)
         } catch (error) {
             throw new ConflictException('Invalid Data')
         }
     }
 
-    async findAll(): Promise<User[]> {
+    async findAll(): Promise<UserEntity[]> {
         return this.usersRepository.find({
             select: {
                 id: true,
@@ -62,7 +62,7 @@ export class UsersService {
         })
     }
 
-    async findOne(id: string, reqUser: User) {
+    async findOne(id: string, reqUser: UserEntity) {
         const admin = isAdmin(reqUser.roles)
 
         if (admin || reqUser.id === id) {
@@ -109,8 +109,8 @@ export class UsersService {
     async update(
         id: string,
         payload: UpdateUserDto,
-        reqUser: User
-    ): Promise<Partial<User> | null> {
+        reqUser: UserEntity
+    ): Promise<Partial<UserEntity> | null> {
         const admin = isAdmin(reqUser.roles)
 
         if (admin || reqUser.id === id) {
@@ -141,7 +141,7 @@ export class UsersService {
                 payload.roles = undefined
             }
 
-            const updateData: Partial<User> = UserMapper.toPersistence({
+            const updateData: Partial<UserEntity> = UserMapper.toPersistence({
                 ...payload,
                 passwordHash
             })
@@ -149,7 +149,9 @@ export class UsersService {
             try {
                 await this.usersRepository.update(id, updateData)
 
-                return UserMapper.toResponse({ id, ...user, ...updateData })
+                const response = new UserEntity({ id, ...user, ...updateData })
+
+                return response
             } catch (error) {
                 throw new Error(error)
             }
@@ -158,7 +160,7 @@ export class UsersService {
         }
     }
 
-    async remove(id: string, reqUser: User) {
+    async remove(id: string, reqUser: UserEntity) {
         const admin = isAdmin(reqUser.roles)
 
         if (admin || reqUser.id === id) {

@@ -10,7 +10,9 @@ import {
     HttpStatus,
     ParseUUIDPipe,
     UseGuards,
-    Request
+    Request,
+    ClassSerializerInterceptor,
+    UseInterceptors
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 
@@ -26,6 +28,7 @@ import { UpdateUserDto } from './dto/update-user.dto'
 
 @ApiTags('Users')
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 

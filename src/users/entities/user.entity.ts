@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer'
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -14,7 +15,7 @@ export enum Role {
 }
 
 @Entity({ name: 'user' })
-export class User {
+export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
@@ -37,14 +38,22 @@ export class User {
     roles?: Role[]
 
     @Column()
+    @Exclude({ toPlainOnly: true })
     passwordHash: string
 
     @CreateDateColumn()
+    @Exclude()
     createdAt: Date
 
     @UpdateDateColumn()
+    @Exclude()
     updatedAt: Date
 
     @DeleteDateColumn()
+    @Exclude()
     deletedAt: Date
+
+    constructor(partial: Partial<UserEntity>) {
+        Object.assign(this, partial)
+    }
 }

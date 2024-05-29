@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { User } from '../users/entities/user.entity'
+import { UserEntity } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 import { HashService } from '../shared/hash/hash.service'
 
@@ -23,7 +23,7 @@ export class AuthService {
         private hashing: HashService
     ) {}
 
-    async validateUser(email: string, password: string): Promise<User> {
+    async validateUser(email: string, password: string): Promise<UserEntity> {
         const user = await this.usersService.findOneByEmail(email)
 
         if (user) {
@@ -45,7 +45,7 @@ export class AuthService {
         )
     }
 
-    async login(user: Partial<User>): Promise<UserToken> {
+    async login(user: Partial<UserEntity>): Promise<UserToken> {
         const payload: UserPayload = {
             sub: user.id,
             email: user.email,
