@@ -1,12 +1,11 @@
 import { ConfigService } from '@nestjs/config'
+import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { config } from 'dotenv'
 config()
 
-import { DataSource } from 'typeorm'
-
 const configService = new ConfigService()
 
-export default new DataSource({
+export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
     host: configService.getOrThrow('POSTGRES_HOST'),
     port: configService.getOrThrow<number>('POSTGRES_PORT'),
@@ -17,4 +16,4 @@ export default new DataSource({
     synchronize: true, // change to false for production
     migrations: [__dirname + '/migrations/*{.ts,.js}'],
     logging: true // change to false for production
-})
+}

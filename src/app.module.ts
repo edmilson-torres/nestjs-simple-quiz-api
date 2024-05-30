@@ -6,9 +6,13 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { UsersModule } from './users/users.module'
 import { AuthModule } from './auth/auth.module'
 import { HashModule } from './shared/hash/hash.module'
+import { TypeOrmModule } from '@nestjs/typeorm'
+
+import { typeOrmConfig } from './database/database.config'
 
 @Module({
     imports: [
+        TypeOrmModule.forRoot(typeOrmConfig),
         ConfigModule.forRoot({
             isGlobal: true
         }),

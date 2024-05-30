@@ -2,10 +2,10 @@ import {
     BadRequestException,
     ConflictException,
     ForbiddenException,
-    Inject,
     Injectable,
     NotFoundException
 } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { CreateUserDto } from './dto/create-user.dto'
@@ -13,18 +13,17 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { Role, UserEntity } from './entities/user.entity'
 import { UserMapper } from './users.mapper'
 import { HashService } from '../shared/hash/hash.service'
-
 import { isAdmin } from '../shared/isAdmin'
 
 @Injectable()
 export class UsersService {
     constructor(
-        @Inject('USER_REPOSITORY')
+        @InjectRepository(UserEntity)
         private readonly usersRepository: Repository<UserEntity>,
         private readonly hashing: HashService
     ) {}
 
-    async create(payload: CreateUserDto) {
+    async create(payload: CreateUserDto): Promise<Partial<UserEntity>> {
         const userObject = await this.usersRepository.findOne({
             where: { email: payload.email }
         })
