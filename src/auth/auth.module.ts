@@ -18,7 +18,7 @@ import { JwtStrategy } from './strategies/jwt.strategy'
         JwtModule.register({
             global: true,
             secret: jwtConstants.secret,
-            signOptions: { expiresIn: '60h' }
+            signOptions: { expiresIn: '6h' }
         }),
         HashModule
     ],
