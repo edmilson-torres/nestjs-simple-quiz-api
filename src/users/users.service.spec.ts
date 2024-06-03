@@ -75,7 +75,8 @@ describe('UserService', () => {
                     firstName: 'firstName #1',
                     lastName: 'lastName #1',
                     email: 'teste@teste.com',
-                    password: '123456'
+                    password: '123456',
+                    roles: [Role.Admin]
                 })
             ).resolves.toEqual({
                 firstName: 'firstName #1',
