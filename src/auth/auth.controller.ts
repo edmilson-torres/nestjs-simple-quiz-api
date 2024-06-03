@@ -13,13 +13,11 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('/login')
-    async login(@Request() req, @Body() data: LoginDto) {
-        const passwordHash = data.password
-
+    async login(@Request() req, @Body() payload: LoginDto) {
         return this.authService.login({
             id: req.user.id,
-            email: data.email,
-            passwordHash,
+            email: payload.email,
+            password: payload.password,
             roles: req.user.roles
         })
     }

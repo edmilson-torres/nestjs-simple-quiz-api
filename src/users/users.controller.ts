@@ -34,8 +34,8 @@ export class UsersController {
     @ApiOperation({ summary: 'create a new user' })
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.create(createUserDto)
+    async create(@Body() payload: CreateUserDto) {
+        return this.usersService.create(payload)
     }
 
     @ApiBearerAuth()
@@ -65,9 +65,9 @@ export class UsersController {
     update(
         @Request() req,
         @Param('id', ParseUUIDPipe) id: string,
-        @Body() updateUserDto: UpdateUserDto
+        @Body() payload: UpdateUserDto
     ) {
-        return this.usersService.update(id, updateUserDto, req.user)
+        return this.usersService.update(id, payload, req.user)
     }
 
     @ApiBearerAuth()
