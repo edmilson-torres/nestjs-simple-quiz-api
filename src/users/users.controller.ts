@@ -17,12 +17,11 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
-
-import { Role } from './entities/user.entity'
-import { Roles } from '../auth/roles.decorator'
 import { RolesGuard } from '../auth/guards/roles.guard'
+import { Roles } from '../auth/decorators/roles.decorator'
 
 import { UsersService } from './users.service'
+import { Role } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 
