@@ -11,7 +11,6 @@ import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { Role, UserEntity } from './entities/user.entity'
-import { UserMapper } from './users.mapper'
 import { HashService } from '../shared/hash/hash.service'
 import { isAdmin } from '../shared/isAdmin'
 
@@ -24,24 +23,17 @@ export class UsersService {
     ) {}
 
     async create(payload: CreateUserDto): Promise<Partial<UserEntity>> {
-        const userObject = await this.usersRepository.findOne({
-            where: { email: payload.email }
-        })
-        if (userObject) {
-            throw new BadRequestException('Invalid data')
-        }
-
-        const passwordHash = await this.hashing.hash(payload.password)
-
         payload.roles = [Role.User]
 
-        const createData: Partial<UserEntity> = UserMapper.toPersistence({
-            passwordHash,
-            ...payload
+        const password = await this.hashing.hash(payload.password)
+
+        const createUserData = this.usersRepository.create({
+            ...payload,
+            password
         })
 
         try {
-            const newUser = await this.usersRepository.save(createData)
+            const newUser = await this.usersRepository.save(createUserData)
 
             return new UserEntity(newUser)
         } catch (error) {
@@ -94,7 +86,7 @@ export class UsersService {
                 lastName: true,
                 email: true,
                 roles: true,
-                passwordHash: true
+                password: true
             }
         })
 
@@ -140,17 +132,15 @@ export class UsersService {
                 payload.roles = undefined
             }
 
-            const updateData: Partial<UserEntity> = UserMapper.toPersistence({
+            const updateData: Partial<UserEntity> = new UserEntity({
                 ...payload,
-                passwordHash
+                password: passwordHash
             })
 
             try {
                 await this.usersRepository.update(id, updateData)
 
-                const response = new UserEntity({ id, ...user, ...updateData })
-
-                return response
+                return new UserEntity({ id, ...user, ...updateData })
             } catch (error) {
                 throw new Error(error)
             }

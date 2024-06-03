@@ -29,13 +29,13 @@ export class AuthService {
         if (user) {
             const isPasswordValid = await this.hashing.compare(
                 password,
-                user.passwordHash
+                user.password
             )
 
             if (isPasswordValid) {
                 return {
                     ...user,
-                    passwordHash: undefined
+                    password: undefined
                 }
             }
         }

@@ -39,7 +39,7 @@ export class UserEntity {
 
     @Column()
     @Exclude({ toPlainOnly: true })
-    passwordHash: string
+    password: string
 
     @CreateDateColumn()
     @Exclude()

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
+import { Exclude, Transform } from 'class-transformer'
 import {
     IsEmail,
     MinLength,
@@ -8,6 +8,7 @@ import {
     IsStrongPassword,
     IsEnum
 } from 'class-validator'
+
 import { Role } from '../entities/user.entity'
 
 const stringCapitalize = (value: string) => {
@@ -43,6 +44,7 @@ export class CreateUserDto {
     @MaxLength(25)
     @NotContains(' ', { message: 'password can not contains spaces' })
     @Transform(({ value }) => value.trim())
+    @Exclude({ toPlainOnly: true })
     password: string
 
     @ApiPropertyOptional()
