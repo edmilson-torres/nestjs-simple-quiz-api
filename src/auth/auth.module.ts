@@ -7,22 +7,13 @@ import { UsersModule } from '../users/users.module'
 
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
-import { LocalStrategy } from './strategies/local.strategy'
-import { jwtConstants } from './auth.config'
 import { JwtStrategy } from './strategies/jwt.strategy'
+import { LocalStrategy } from './strategies/local.strategy'
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy'
 
 @Module({
-    imports: [
-        UsersModule,
-        PassportModule,
-        JwtModule.register({
-            global: true,
-            secret: jwtConstants.secret,
-            signOptions: { expiresIn: '6h' }
-        }),
-        HashModule
-    ],
+    imports: [UsersModule, PassportModule, JwtModule.register({}), HashModule],
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy, JwtStrategy]
+    providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy]
 })
 export class AuthModule {}

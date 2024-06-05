@@ -35,11 +35,15 @@ export class UserEntity {
         array: true,
         default: [Role.User]
     })
-    roles?: Role[]
+    roles: Role[]
 
     @Column()
     @Exclude({ toPlainOnly: true })
     password: string
+
+    @Column({ default: null })
+    @Exclude({ toPlainOnly: true })
+    refreshToken: string
 
     @CreateDateColumn()
     @Exclude()

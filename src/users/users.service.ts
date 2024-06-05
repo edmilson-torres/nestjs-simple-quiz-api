@@ -64,14 +64,16 @@ export class UsersService {
                     firstName: true,
                     lastName: true,
                     email: true,
-                    roles: true
+                    roles: true,
+                    refreshToken: true
                 }
             })
+
             if (!user) {
                 throw new NotFoundException()
             }
 
-            return user
+            return new UserEntity(user)
         } else {
             throw new ForbiddenException()
         }
@@ -86,7 +88,8 @@ export class UsersService {
                 lastName: true,
                 email: true,
                 roles: true,
-                password: true
+                password: true,
+                refreshToken: true
             }
         })
 
@@ -94,7 +97,28 @@ export class UsersService {
             throw new NotFoundException()
         }
 
-        return user
+        return new UserEntity(user)
+    }
+
+    async findOneById(id: string) {
+        const user = await this.usersRepository.findOne({
+            where: { id },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                roles: true,
+                password: true,
+                refreshToken: true
+            }
+        })
+
+        if (!user) {
+            throw new NotFoundException()
+        }
+
+        return new UserEntity(user)
     }
 
     async update(
@@ -166,6 +190,20 @@ export class UsersService {
             return null
         } else {
             throw new ForbiddenException()
+        }
+    }
+
+    async updateRefreshToken(id: string, signature: string): Promise<void> {
+        const signatureHash = await this.hashing.hash(signature)
+
+        const updateData: Partial<UserEntity> = new UserEntity({
+            refreshToken: signatureHash
+        })
+
+        try {
+            await this.usersRepository.update(id, updateData)
+        } catch (error) {
+            throw new Error(error.message)
         }
     }
 }
