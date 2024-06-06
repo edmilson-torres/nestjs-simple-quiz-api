@@ -6,7 +6,8 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     UpdateDateColumn,
-    Index
+    Index,
+    BaseEntity
 } from 'typeorm'
 
 export enum Role {
@@ -15,7 +16,7 @@ export enum Role {
 }
 
 @Entity({ name: 'user' })
-export class UserEntity {
+export class UserEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
@@ -58,6 +59,7 @@ export class UserEntity {
     deletedAt: Date
 
     constructor(partial: Partial<UserEntity>) {
+        super()
         Object.assign(this, partial)
     }
 }
