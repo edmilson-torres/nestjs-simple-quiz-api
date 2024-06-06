@@ -47,10 +47,10 @@ export class AuthService {
             )
 
             if (isPasswordValid) {
-                return {
+                return new UserEntity({
                     ...user,
                     password: undefined
-                }
+                })
             }
         }
 
