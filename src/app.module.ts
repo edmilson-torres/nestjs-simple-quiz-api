@@ -9,6 +9,7 @@ import { HashModule } from './shared/hash/hash.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { typeOrmConfig } from './database/database.config'
+import { QuizzesModule } from './quizzes/quizzes.module'
 
 @Module({
     imports: [
@@ -35,7 +36,8 @@ import { typeOrmConfig } from './database/database.config'
         ]),
         UsersModule,
         HashModule,
-        AuthModule
+        AuthModule,
+        QuizzesModule
     ],
     controllers: [],
     providers: [
