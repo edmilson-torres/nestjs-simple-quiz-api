@@ -3,17 +3,15 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 
+import { DatabaseModule } from './database/database.module'
 import { UsersModule } from './users/users.module'
 import { AuthModule } from './auth/auth.module'
 import { HashModule } from './shared/hash/hash.module'
-import { TypeOrmModule } from '@nestjs/typeorm'
-
-import { typeOrmConfig } from './database/database.config'
 import { QuizzesModule } from './quizzes/quizzes.module'
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot(typeOrmConfig),
+        DatabaseModule,
         ConfigModule.forRoot({
             isGlobal: true
         }),
