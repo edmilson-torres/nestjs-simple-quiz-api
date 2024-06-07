@@ -32,9 +32,9 @@ import { QuizzesModule } from './quizzes/quizzes.module'
                 limit: 100
             }
         ]),
+        AuthModule,
         UsersModule,
         HashModule,
-        AuthModule,
         QuizzesModule
     ],
     controllers: [],
