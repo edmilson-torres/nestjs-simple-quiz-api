@@ -10,7 +10,6 @@ import {
     HttpStatus,
     ParseUUIDPipe,
     UseGuards,
-    Request,
     ClassSerializerInterceptor,
     UseInterceptors
 } from '@nestjs/common'
@@ -24,6 +23,8 @@ import { Role } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { AuthGuard } from '@nestjs/passport'
+import { GetCurrentUser } from './decorators/user.decorator'
+import { PassportUser } from './types/passport-user.type'
 
 @ApiTags('Users')
 @Controller('users')
@@ -52,8 +53,11 @@ export class UsersController {
     @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiOperation({ summary: 'get user by id' })
     @Get(':id')
-    findOne(@Request() req, @Param('id', ParseUUIDPipe) id: string) {
-        return this.usersService.findOne(id, req.user)
+    findOne(
+        @GetCurrentUser() user: PassportUser,
+        @Param('id', ParseUUIDPipe) id: string
+    ) {
+        return this.usersService.findOne(id, user)
     }
 
     @ApiBearerAuth()
@@ -63,11 +67,11 @@ export class UsersController {
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
     update(
-        @Request() req,
+        @GetCurrentUser() user: PassportUser,
         @Param('id', ParseUUIDPipe) id: string,
         @Body() payload: UpdateUserDto
     ) {
-        return this.usersService.update(id, payload, req.user)
+        return this.usersService.update(id, payload, user)
     }
 
     @ApiBearerAuth()
@@ -76,7 +80,10 @@ export class UsersController {
     @ApiOperation({ summary: 'delete a user by id' })
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Request() req, @Param('id', ParseUUIDPipe) id: string) {
-        return this.usersService.remove(id, req.user)
+    remove(
+        @GetCurrentUser() user: PassportUser,
+        @Param('id', ParseUUIDPipe) id: string
+    ) {
+        return this.usersService.remove(id, user)
     }
 }
