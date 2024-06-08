@@ -12,7 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { Role, UserEntity } from './entities/user.entity'
 import { HashService } from '../shared/hash/hash.service'
-import { isAdmin } from '../shared/isAdmin'
+import { isAdmin } from './helpers/isAdmin'
 
 @Injectable()
 export class UsersService {

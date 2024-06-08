@@ -10,13 +10,7 @@ import {
 } from 'class-validator'
 
 import { Role } from '../entities/user.entity'
-
-const stringCapitalize = (value: string) => {
-    return (
-        value.trim().charAt(0).toUpperCase() +
-        value.trim().slice(1).toLowerCase()
-    )
-}
+import { stringCapitalize } from '../helpers/stringCapitalize'
 
 export class CreateUserDto {
     @ApiProperty()
