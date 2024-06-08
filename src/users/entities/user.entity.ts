@@ -7,8 +7,10 @@ import {
     DeleteDateColumn,
     UpdateDateColumn,
     Index,
-    BaseEntity
+    BaseEntity,
+    OneToMany
 } from 'typeorm'
+import { QuizEntity } from '../../quizzes/entities/quiz.entity'
 
 export enum Role {
     User = 'user',
@@ -45,6 +47,9 @@ export class UserEntity extends BaseEntity {
     @Column({ default: null })
     @Exclude({ toPlainOnly: true })
     refreshToken: string
+
+    @OneToMany(() => QuizEntity, (quiz) => quiz.user)
+    quizzes: QuizEntity[]
 
     @CreateDateColumn()
     @Exclude()
