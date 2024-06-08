@@ -13,7 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
     password: configService.getOrThrow('POSTGRES_PASSWORD'),
     database: configService.getOrThrow('POSTGRES_DB'),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-    synchronize: false, // change to false for production
+    synchronize: true, // change to false for production
     migrations: [__dirname + '/migrations/*{.ts,.js}'],
     logging: true // change to false for production
 }
