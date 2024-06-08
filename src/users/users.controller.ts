@@ -23,7 +23,7 @@ import { Role } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { AuthGuard } from '@nestjs/passport'
-import { GetCurrentUser } from './decorators/user.decorator'
+import { CurrentUser } from './decorators/user.decorator'
 import { PassportUser } from './types/passport-user.type'
 
 @ApiTags('Users')
@@ -54,7 +54,7 @@ export class UsersController {
     @ApiOperation({ summary: 'get user by id' })
     @Get(':id')
     findOne(
-        @GetCurrentUser() user: PassportUser,
+        @CurrentUser() user: PassportUser,
         @Param('id', ParseUUIDPipe) id: string
     ) {
         return this.usersService.findOne(id, user)
@@ -67,7 +67,7 @@ export class UsersController {
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
     update(
-        @GetCurrentUser() user: PassportUser,
+        @CurrentUser() user: PassportUser,
         @Param('id', ParseUUIDPipe) id: string,
         @Body() payload: UpdateUserDto
     ) {
@@ -81,7 +81,7 @@ export class UsersController {
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(
-        @GetCurrentUser() user: PassportUser,
+        @CurrentUser() user: PassportUser,
         @Param('id', ParseUUIDPipe) id: string
     ) {
         return this.usersService.remove(id, user)
