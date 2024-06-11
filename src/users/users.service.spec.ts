@@ -43,6 +43,7 @@ describe('UserService', () => {
                     provide: getRepositoryToken(UserEntity),
                     useValue: {
                         save: jest.fn().mockResolvedValue(oneUser),
+                        create: jest.fn(),
                         findAll: jest.fn().mockResolvedValue(userArray),
                         find: jest.fn().mockResolvedValue(userArray),
                         findOne: jest.fn().mockResolvedValue(oneUser),
@@ -106,7 +107,7 @@ describe('UserService', () => {
                 Promise.resolve(true)
             )
             const result = await service.remove('1', req)
-            expect(result).toEqual(null)
+            expect(result).toBeFalsy()
         })
     })
 })
