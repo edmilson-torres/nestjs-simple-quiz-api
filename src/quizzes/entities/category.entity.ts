@@ -17,7 +17,7 @@ export class CategoryEntity extends BaseEntity {
     id: string
 
     @Column()
-    category: string
+    name: string
 
     @OneToMany(() => QuizEntity, (quiz) => quiz.category)
     quizzes: QuizEntity[]

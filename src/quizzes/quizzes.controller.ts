@@ -45,7 +45,7 @@ export class QuizzesController {
         @Param('id', ParseUUIDPipe) id: string,
         @Body() updateQuizDto: UpdateQuizDto
     ) {
-        return this.quizzesService.update(+id, updateQuizDto)
+        return this.quizzesService.update(id, updateQuizDto)
     }
 
     @Delete(':id')

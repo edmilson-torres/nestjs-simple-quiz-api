@@ -18,7 +18,7 @@ export class QuizzesService {
         const quiz = this.quizzesRepository.create()
         quiz.text = payload.text
         quiz.description = payload.description
-        quiz.category = new CategoryEntity({ category: payload.category })
+        quiz.category = new CategoryEntity({ name: payload.category.name })
 
         const questions = []
         payload.questions.forEach((questionItem) => {
@@ -40,7 +40,11 @@ export class QuizzesService {
     }
 
     findAll() {
-        return this.quizzesRepository.find()
+        return this.quizzesRepository.find({
+            where: { isActive: true },
+            relations: ['category'],
+            loadEagerRelations: false
+        })
     }
 
     async findOne(id: string) {
@@ -52,9 +56,11 @@ export class QuizzesService {
         return quiz
     }
 
-    update(id: number, updateQuizDto: UpdateQuizDto) {
-        console.log(updateQuizDto)
-        return `This action updates a #${id} quiz`
+    async update(id: string, payload: UpdateQuizDto) {
+        const quiz = this.quizzesRepository.create(payload)
+        quiz.category = new CategoryEntity(payload.category)
+
+        return this.quizzesRepository.update({ id }, quiz)
     }
 
     async remove(id: string) {

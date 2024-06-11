@@ -9,7 +9,8 @@ import {
     ArrayMaxSize,
     ArrayMinSize,
     MinLength,
-    MaxLength
+    MaxLength,
+    IsObject
 } from 'class-validator'
 
 export class AnswerDto {
@@ -20,6 +21,7 @@ export class AnswerDto {
     answer: string
 
     @ApiPropertyOptional({ default: false })
+    @IsOptional()
     @IsBoolean()
     isCorrect?: boolean
 }
@@ -27,17 +29,25 @@ export class AnswerDto {
 export class QuestionDto {
     @ApiProperty()
     @IsString()
-    @MinLength(2)
+    @MinLength(10)
     @MaxLength(255)
     question: string
 
     @ApiProperty({ type: [AnswerDto], maxItems: 5, minItems: 2 })
     @IsArray()
     @ArrayMaxSize(5)
-    @ArrayMinSize(1)
+    @ArrayMinSize(2)
     @ValidateNested({ each: true })
     @Type(() => AnswerDto)
     answers: AnswerDto[]
+}
+
+export class CategoryDto {
+    @ApiProperty()
+    @IsString()
+    @MinLength(2)
+    @MaxLength(255)
+    name: string
 }
 
 export class CreateQuizDto {
@@ -48,17 +58,21 @@ export class CreateQuizDto {
     text: string
 
     @ApiPropertyOptional()
+    @IsOptional()
     @IsString()
     @MinLength(2)
     @MaxLength(255)
-    @IsOptional()
     description?: string
 
     @ApiProperty()
-    @IsString()
-    @MinLength(2)
-    @MaxLength(255)
-    category: string
+    @Type(() => CategoryDto)
+    @IsObject()
+    category: CategoryDto
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsBoolean()
+    isActive: boolean
 
     @ApiProperty({ type: [QuestionDto], maxItems: 20, minItems: 1 })
     @IsArray()

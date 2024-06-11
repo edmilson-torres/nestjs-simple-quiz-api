@@ -10,6 +10,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm'
+
 import { QuizEntity } from './quiz.entity'
 import { AnswerEntity } from './answer.entity'
 
@@ -28,8 +29,7 @@ export class QuestionEntity extends BaseEntity {
 
     @OneToMany(() => AnswerEntity, (answer) => answer.question, {
         eager: true,
-        cascade: true,
-        onDelete: 'CASCADE'
+        cascade: true
     })
     answers: AnswerEntity[]
 

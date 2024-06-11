@@ -7,6 +7,7 @@ import { QuizEntity } from './entities/quiz.entity'
 import { CategoryEntity } from './entities/category.entity'
 import { QuestionEntity } from './entities/question.entity'
 import { AnswerEntity } from './entities/answer.entity'
+import { DatabaseModule } from 'src/database/database.module'
 
 @Module({
     imports: [
@@ -15,7 +16,8 @@ import { AnswerEntity } from './entities/answer.entity'
             CategoryEntity,
             QuestionEntity,
             AnswerEntity
-        ])
+        ]),
+        DatabaseModule
     ],
     controllers: [QuizzesController],
     providers: [QuizzesService]

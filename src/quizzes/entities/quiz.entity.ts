@@ -5,6 +5,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    Index,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -22,7 +23,7 @@ export class QuizEntity extends BaseEntity {
     @Column()
     text: string
 
-    @Column()
+    @Column({ default: null })
     description?: string
 
     @Column({ default: true })
@@ -31,11 +32,11 @@ export class QuizEntity extends BaseEntity {
     @ManyToOne(() => UserEntity)
     user: UserEntity
 
-    @ManyToOne(() => CategoryEntity, {
+    @ManyToOne(() => CategoryEntity, (category) => category.quizzes, {
         eager: true,
-        cascade: true,
-        onDelete: 'NO ACTION'
+        cascade: true
     })
+    @Index()
     category: CategoryEntity
 
     @OneToMany(() => QuestionEntity, (question) => question.quiz, {
