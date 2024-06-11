@@ -3,18 +3,31 @@ import { QuizzesController } from './quizzes.controller'
 import { QuizzesService } from './quizzes.service'
 
 describe('QuizzesController', () => {
-    let controller: QuizzesController
+    let quizzesController: QuizzesController
+    let quizzesService: QuizzesService
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [QuizzesController],
-            providers: [QuizzesService]
+            providers: [
+                QuizzesService,
+                {
+                    provide: QuizzesService,
+                    useValue: { remove: jest.fn() }
+                }
+            ]
         }).compile()
 
-        controller = module.get<QuizzesController>(QuizzesController)
+        quizzesController = module.get<QuizzesController>(QuizzesController)
+        quizzesService = module.get<QuizzesService>(QuizzesService)
     })
 
     it('should be defined', () => {
-        expect(controller).toBeDefined()
+        expect(quizzesController).toBeDefined()
+    })
+
+    it('should remove the quiz by id', () => {
+        quizzesController.remove('1')
+        expect(quizzesService.remove).toHaveBeenCalled()
     })
 })
