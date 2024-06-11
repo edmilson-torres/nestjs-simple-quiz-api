@@ -107,7 +107,7 @@ describe('UserService', () => {
                 Promise.resolve(true)
             )
             const result = await service.remove('1', req)
-            expect(result).toBeFalsy()
+            expect(result).toBeNull()
         })
     })
 })
