@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { Role, UserEntity } from './entities/user.entity'
+import { RolesEnum, UserEntity } from './entities/user.entity'
 import { UsersService } from './users.service'
 import { HashModule } from '../shared/hash/hash.module'
 
@@ -28,7 +28,7 @@ const oneUser = {
     roles: ['user']
 }
 
-const req = { id: '1', email: 'teste@test.com', roles: [Role.User] }
+const req = { id: '1', email: 'teste@test.com', roles: [RolesEnum.User] }
 
 describe('UserService', () => {
     let service: UsersService
@@ -77,13 +77,13 @@ describe('UserService', () => {
                     lastName: 'lastName #1',
                     email: 'teste@teste.com',
                     password: '123456',
-                    roles: [Role.Admin]
+                    roles: [RolesEnum.Admin]
                 })
             ).resolves.toEqual({
                 firstName: 'firstName #1',
                 lastName: 'lastName #1',
                 email: 'teste@teste.com',
-                roles: [Role.User]
+                roles: [RolesEnum.User]
             })
         })
     })

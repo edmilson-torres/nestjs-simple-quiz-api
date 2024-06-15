@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { Role, UserEntity } from '../users/entities/user.entity'
+import { RolesEnum, UserEntity } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 import { HashService } from '../shared/hash/hash.service'
 import { jwtConstants } from './auth.config'
@@ -13,7 +13,7 @@ import { jwtConstants } from './auth.config'
 export interface JwtTokenPayload {
     sub: string
     email: string
-    roles: Role[]
+    roles: RolesEnum[]
     iat?: number
     exp?: number
 }

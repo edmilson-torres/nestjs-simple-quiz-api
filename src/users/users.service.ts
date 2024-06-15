@@ -10,7 +10,7 @@ import { Repository } from 'typeorm'
 
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { Role, UserEntity } from './entities/user.entity'
+import { RolesEnum, UserEntity } from './entities/user.entity'
 import { HashService } from '../shared/hash/hash.service'
 import { isAdmin } from './helpers/isAdmin'
 
@@ -23,7 +23,7 @@ export class UsersService {
     ) {}
 
     async create(payload: CreateUserDto): Promise<Partial<UserEntity>> {
-        payload.roles = [Role.User]
+        payload.roles = [RolesEnum.User]
 
         const password = await this.hashing.hash(payload.password)
 

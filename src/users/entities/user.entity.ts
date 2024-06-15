@@ -12,7 +12,7 @@ import {
 } from 'typeorm'
 import { QuizEntity } from '../../quizzes/entities/quiz.entity'
 
-export enum Role {
+export enum RolesEnum {
     User = 'user',
     Admin = 'admin'
 }
@@ -34,11 +34,11 @@ export class UserEntity extends BaseEntity {
 
     @Column({
         type: 'enum',
-        enum: Role,
+        enum: RolesEnum,
         array: true,
-        default: [Role.User]
+        default: [RolesEnum.User]
     })
-    roles: Role[]
+    roles: RolesEnum[]
 
     @Column()
     @Exclude({ toPlainOnly: true })

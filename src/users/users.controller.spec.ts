@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
 import { PassportUser } from './types/passport-user.type'
-import { Role } from './entities/user.entity'
+import { RolesEnum } from './entities/user.entity'
 
 const createUserDto: CreateUserDto = {
     firstName: 'firstName #1',
@@ -15,7 +15,7 @@ const createUserDto: CreateUserDto = {
 const req: PassportUser = {
     id: '1',
     email: 'teste@test.com',
-    roles: [Role.User]
+    roles: [RolesEnum.User]
 }
 
 describe('UsersController', () => {

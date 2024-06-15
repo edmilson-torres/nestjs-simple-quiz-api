@@ -9,7 +9,7 @@ import {
     IsEnum
 } from 'class-validator'
 
-import { Role } from '../entities/user.entity'
+import { RolesEnum } from '../entities/user.entity'
 import { stringCapitalize } from '../helpers/stringCapitalize'
 
 export class CreateUserDto {
@@ -42,6 +42,6 @@ export class CreateUserDto {
     password: string
 
     @ApiPropertyOptional()
-    @IsEnum(Role, { each: true })
-    roles?: Role[] = [Role.User]
+    @IsEnum(RolesEnum, { each: true })
+    roles?: RolesEnum[] = [RolesEnum.User]
 }
