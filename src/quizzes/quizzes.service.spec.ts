@@ -15,7 +15,7 @@ describe('QuizzesService', () => {
                 {
                     provide: getRepositoryToken(QuizEntity),
                     useValue: {
-                        remove: jest.fn(),
+                        delete: jest.fn(),
                         exists: jest.fn()
                     }
                 }
@@ -32,9 +32,9 @@ describe('QuizzesService', () => {
         expect(service).toBeDefined()
     })
 
-    it('should remove a quiz by id', () => {
+    it('should remove a quiz by id', async () => {
         jest.spyOn(repository, 'exists').mockReturnValue(Promise.resolve(true))
 
-        expect(service.remove('1')).toBeNull()
+        expect(await service.remove('1')).toBeNull()
     })
 })

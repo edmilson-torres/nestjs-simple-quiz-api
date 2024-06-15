@@ -71,7 +71,8 @@ export class QuizzesService {
         if (!quiz) {
             throw new NotFoundException()
         }
+        await this.quizzesRepository.delete(id)
 
-        return this.quizzesRepository.delete(id)
+        return null
     }
 }
