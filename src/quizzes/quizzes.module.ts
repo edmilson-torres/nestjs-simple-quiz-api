@@ -10,6 +10,7 @@ import { AnswerEntity } from './entities/answer.entity'
 import { DatabaseModule } from 'src/database/database.module'
 import { CategoriesController } from './categories.controller'
 import { CategoriesService } from './categories.service'
+import { JwtService } from '@nestjs/jwt'
 
 @Module({
     imports: [
@@ -22,6 +23,6 @@ import { CategoriesService } from './categories.service'
         DatabaseModule
     ],
     controllers: [QuizzesController, CategoriesController],
-    providers: [QuizzesService, CategoriesService]
+    providers: [QuizzesService, CategoriesService, JwtService]
 })
 export class QuizzesModule {}
