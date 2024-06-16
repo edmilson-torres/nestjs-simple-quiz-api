@@ -10,15 +10,19 @@ import {
     HttpStatus,
     ClassSerializerInterceptor,
     UseInterceptors,
-    ParseUUIDPipe
+    ParseUUIDPipe,
+    UseGuards
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
 import { QuizzesService } from './quizzes.service'
 import { CreateQuizDto } from './dto/create-quiz.dto'
 import { UpdateQuizDto } from './dto/update-quiz.dto'
+import { AuthGuard } from '@nestjs/passport'
 
 @ApiTags('Quizzes')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('quizzes')
 export class QuizzesController {
