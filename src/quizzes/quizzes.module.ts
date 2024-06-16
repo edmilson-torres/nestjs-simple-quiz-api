@@ -8,6 +8,8 @@ import { CategoryEntity } from './entities/category.entity'
 import { QuestionEntity } from './entities/question.entity'
 import { AnswerEntity } from './entities/answer.entity'
 import { DatabaseModule } from 'src/database/database.module'
+import { CategoriesController } from './categories.controller'
+import { CategoriesService } from './categories.service'
 
 @Module({
     imports: [
@@ -19,7 +21,7 @@ import { DatabaseModule } from 'src/database/database.module'
         ]),
         DatabaseModule
     ],
-    controllers: [QuizzesController],
-    providers: [QuizzesService]
+    controllers: [QuizzesController, CategoriesController],
+    providers: [QuizzesService, CategoriesService]
 })
 export class QuizzesModule {}
