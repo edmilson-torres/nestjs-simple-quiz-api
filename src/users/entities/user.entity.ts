@@ -14,7 +14,8 @@ import { QuizEntity } from '../../quizzes/entities/quiz.entity'
 
 export enum RolesEnum {
     User = 'user',
-    Admin = 'admin'
+    Admin = 'admin',
+    Moderator = 'moderator'
 }
 
 @Entity({ name: 'user' })
