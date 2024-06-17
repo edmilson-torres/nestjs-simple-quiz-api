@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { JwtService } from '@nestjs/jwt'
+
 import { QuizzesController } from './quizzes.controller'
 import { QuizzesService } from './quizzes.service'
 
@@ -10,6 +12,7 @@ describe('QuizzesController', () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [QuizzesController],
             providers: [
+                JwtService,
                 QuizzesService,
                 {
                     provide: QuizzesService,
