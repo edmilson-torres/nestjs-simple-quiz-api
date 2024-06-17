@@ -19,12 +19,12 @@ import { QuizzesService } from './quizzes.service'
 import { CreateQuizDto } from './dto/create-quiz.dto'
 import { UpdateQuizDto } from './dto/update-quiz.dto'
 
-import { Public } from 'src/auth/decorators/public.decorator'
-import { AuthGuard } from '../auth/guards/auth-jwt.guard'
+import { Public } from '../auth/decorators/public.decorator'
+import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
 
 @ApiTags('Quizzes')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuardJwt)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('quizzes')
 export class QuizzesController {
