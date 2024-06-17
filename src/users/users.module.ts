@@ -4,11 +4,12 @@ import { UsersController } from './users.controller'
 import { HashModule } from '../shared/hash/hash.module'
 import { UserEntity } from './entities/user.entity'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { JwtService } from '@nestjs/jwt'
 
 @Module({
     imports: [TypeOrmModule.forFeature([UserEntity]), HashModule],
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, JwtService],
     exports: [UsersService]
 })
 export class UsersModule {}

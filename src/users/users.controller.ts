@@ -17,22 +17,24 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { Roles } from '../auth/decorators/roles.decorator'
-
+import { CurrentUser } from './decorators/user.decorator'
 import { UsersService } from './users.service'
 import { RolesEnum } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { AuthGuard } from '@nestjs/passport'
-import { CurrentUser } from './decorators/user.decorator'
 import { PassportUser } from './types/passport-user.type'
+import { Public } from '../auth/decorators/public.decorator'
+import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
 
 @ApiTags('Users')
-@Controller('users')
+@UseGuards(AuthGuardJwt, RolesGuard)
 @UseInterceptors(ClassSerializerInterceptor)
+@Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @ApiOperation({ summary: 'create a new user' })
+    @Public()
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() payload: CreateUserDto) {
@@ -41,7 +43,6 @@ export class UsersController {
 
     @ApiBearerAuth()
     @Roles(RolesEnum.Admin)
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiOperation({ summary: 'list all users' })
     @Get()
     findAll() {
@@ -50,7 +51,6 @@ export class UsersController {
 
     @ApiBearerAuth()
     @Roles(RolesEnum.User, RolesEnum.Admin)
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiOperation({ summary: 'get user by id' })
     @Get(':id')
     findOne(
@@ -62,7 +62,6 @@ export class UsersController {
 
     @ApiBearerAuth()
     @Roles(RolesEnum.User, RolesEnum.Admin)
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiOperation({ summary: 'update a user by id' })
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
@@ -76,7 +75,6 @@ export class UsersController {
 
     @ApiBearerAuth()
     @Roles(RolesEnum.User, RolesEnum.Admin)
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiOperation({ summary: 'delete a user by id' })
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
