@@ -12,7 +12,7 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator'
 import { Request } from 'express'
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuardJwt implements CanActivate {
     constructor(
         private jwtService: JwtService,
         private reflector: Reflector
