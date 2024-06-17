@@ -18,15 +18,19 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { CategoriesService } from './categories.service'
 import { CategoryDto } from './dto/category.dto'
+import { Roles } from 'src/auth/decorators/roles.decorator'
+import { RolesEnum } from 'src/users/entities/user.entity'
+import { RolesGuard } from 'src/auth/guards/roles.guard'
 
 @ApiTags('Categories')
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('categories')
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
+    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
     @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@Body() payload: CategoryDto) {
@@ -43,6 +47,7 @@ export class CategoriesController {
         return this.categoriesService.findOne(id)
     }
 
+    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
     @Patch(':id')
     update(
         @Param('id', ParseUUIDPipe) id: string,
@@ -51,6 +56,7 @@ export class CategoriesController {
         return this.categoriesService.update(id, payload)
     }
 
+    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(@Param('id', ParseUUIDPipe) id: string) {
