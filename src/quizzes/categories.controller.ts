@@ -18,9 +18,9 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { CategoriesService } from './categories.service'
 import { CategoryDto } from './dto/category.dto'
-import { Roles } from 'src/auth/decorators/roles.decorator'
-import { RolesEnum } from 'src/users/entities/user.entity'
-import { RolesGuard } from 'src/auth/guards/roles.guard'
+import { Roles } from '../auth/decorators/roles.decorator'
+import { RolesEnum } from '../users/entities/user.entity'
+import { RolesGuard } from '../auth/guards/roles.guard'
 
 @ApiTags('Categories')
 @ApiBearerAuth()
