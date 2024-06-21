@@ -11,6 +11,10 @@ import { DatabaseModule } from '../database/database.module'
 import { CategoriesController } from './categories.controller'
 import { CategoriesService } from './categories.service'
 import { JwtService } from '@nestjs/jwt'
+import { QuestionsController } from './questions.controller'
+import { AnswerController } from './answers.controller'
+import { QuestionsService } from './questions.service'
+import { AnswerService } from './answers.service'
 
 @Module({
     imports: [
@@ -22,7 +26,18 @@ import { JwtService } from '@nestjs/jwt'
         ]),
         DatabaseModule
     ],
-    controllers: [QuizzesController, CategoriesController],
-    providers: [QuizzesService, CategoriesService, JwtService]
+    controllers: [
+        QuizzesController,
+        CategoriesController,
+        QuestionsController,
+        AnswerController
+    ],
+    providers: [
+        QuizzesService,
+        CategoriesService,
+        JwtService,
+        QuestionsService,
+        AnswerService
+    ]
 })
 export class QuizzesModule {}
