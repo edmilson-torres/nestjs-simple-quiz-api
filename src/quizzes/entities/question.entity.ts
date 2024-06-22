@@ -20,7 +20,7 @@ export class QuestionEntity extends BaseEntity {
     id: string
 
     @Column()
-    question: string
+    text: string
 
     @ManyToOne(() => QuizEntity, {
         onDelete: 'CASCADE'
