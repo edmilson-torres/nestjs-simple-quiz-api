@@ -1,10 +1,11 @@
 import {
+    ConflictException,
     Injectable,
     NotFoundException,
     UnprocessableEntityException
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, TypeORMError } from 'typeorm'
 
 import { QuizEntity } from './entities/quiz.entity'
 import { CreateQuizDto } from './dto/create-quiz.dto'
@@ -75,13 +76,15 @@ export class QuizzesService {
 
         try {
             await this.quizzesRepository.update({ id }, payload)
-
-            const quizUpdated = this.quizzesRepository.merge(quiz, payload)
-
-            return quizUpdated
         } catch (error) {
+            if (error instanceof TypeORMError) throw new ConflictException()
+
             throw new UnprocessableEntityException(error.message)
         }
+
+        const quizUpdated = this.quizzesRepository.merge(quiz, payload)
+
+        return quizUpdated
     }
 
     async remove(id: string) {
@@ -93,7 +96,13 @@ export class QuizzesService {
             throw new NotFoundException()
         }
 
-        await this.quizzesRepository.delete(id)
+        try {
+            await this.quizzesRepository.delete(id)
+        } catch (error) {
+            if (error instanceof TypeORMError) throw new ConflictException()
+
+            throw new UnprocessableEntityException(error.message)
+        }
 
         return null
     }
