@@ -4,6 +4,7 @@ import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
 import { PassportUser } from './types/passport-user.type'
 import { RolesEnum } from './entities/user.entity'
+import { JwtService } from '@nestjs/jwt'
 
 const createUserDto: CreateUserDto = {
     firstName: 'firstName #1',
@@ -26,6 +27,7 @@ describe('UsersController', () => {
         const app: TestingModule = await Test.createTestingModule({
             controllers: [UsersController],
             providers: [
+                JwtService,
                 UsersService,
                 {
                     provide: UsersService,
