@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+    Injectable,
+    NotFoundException,
+    UnprocessableEntityException
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
@@ -59,10 +63,25 @@ export class QuizzesService {
     }
 
     async update(id: string, payload: UpdateQuizDto) {
-        const quiz = this.quizzesRepository.create(payload)
-        quiz.category = new CategoryEntity(payload.category)
+        const quiz = await this.quizzesRepository.findOne({
+            where: { id },
+            relations: ['category'],
+            loadEagerRelations: false
+        })
 
-        return this.quizzesRepository.update({ id }, quiz)
+        if (!quiz) {
+            throw new NotFoundException()
+        }
+
+        try {
+            await this.quizzesRepository.update({ id }, payload)
+
+            const quizUpdated = this.quizzesRepository.merge(quiz, payload)
+
+            return quizUpdated
+        } catch (error) {
+            throw new UnprocessableEntityException(error.message)
+        }
     }
 
     async remove(id: string) {
