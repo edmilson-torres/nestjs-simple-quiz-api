@@ -13,7 +13,6 @@ import {
     Patch,
     Post
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { Roles } from '../auth/decorators/roles.decorator'
@@ -21,10 +20,11 @@ import { RolesEnum } from '../users/entities/user.entity'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { AnswerDto } from './dto/answer.dto'
 import { AnswerService } from './answers.service'
+import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
 
 @ApiTags('Answers')
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'), RolesGuard)
+@UseGuards(AuthGuardJwt, RolesGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('answers')
 export class AnswerController {
