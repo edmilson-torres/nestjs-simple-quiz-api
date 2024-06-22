@@ -12,7 +12,7 @@ export class AnswerDto {
     @IsString()
     @MinLength(1)
     @MaxLength(255)
-    answer: string
+    text: string
 
     @ApiPropertyOptional({ default: false })
     @IsOptional()

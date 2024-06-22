@@ -17,7 +17,7 @@ export class QuestionDto {
     @IsString()
     @MinLength(10)
     @MaxLength(255)
-    question: string
+    text: string
 
     @ApiProperty({ type: [AnswerDto], maxItems: 5, minItems: 2 })
     @IsArray()
