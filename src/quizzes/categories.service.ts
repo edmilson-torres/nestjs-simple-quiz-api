@@ -2,7 +2,8 @@ import {
     BadRequestException,
     ConflictException,
     Injectable,
-    NotFoundException
+    NotFoundException,
+    UnprocessableEntityException
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, TypeORMError } from 'typeorm'
@@ -54,7 +55,17 @@ export class CategoriesService {
 
         const category = this.categoriesRepository.create(payload)
 
-        return this.categoriesRepository.update({ id }, category)
+        try {
+            await this.categoriesRepository.update({ id }, category)
+        } catch (error) {
+            if (error instanceof TypeORMError) throw new ConflictException()
+
+            throw new UnprocessableEntityException(error.message)
+        }
+
+        category.id = id
+
+        return category
     }
 
     async remove(id: string) {
@@ -70,6 +81,8 @@ export class CategoriesService {
             await this.categoriesRepository.delete(id)
         } catch (error) {
             if (error instanceof TypeORMError) throw new ConflictException()
+
+            throw new UnprocessableEntityException(error.message)
         }
 
         return null
