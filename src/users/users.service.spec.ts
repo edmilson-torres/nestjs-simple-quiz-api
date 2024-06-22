@@ -2,7 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { RolesEnum, UserEntity } from './entities/user.entity'
+import { UserEntity } from './entities/user.entity'
+import { RolesEnum } from './entities/roles.enum'
 import { UsersService } from './users.service'
 import { HashModule } from '../shared/hash/hash.module'
 

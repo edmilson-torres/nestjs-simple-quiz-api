@@ -9,7 +9,7 @@ import {
     IsEnum
 } from 'class-validator'
 
-import { RolesEnum } from '../entities/user.entity'
+import { RolesEnum } from '../entities/roles.enum'
 import { stringCapitalize } from '../helpers/stringCapitalize'
 
 export class CreateUserDto {

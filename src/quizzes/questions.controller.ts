@@ -16,7 +16,7 @@ import {
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { Roles } from '../auth/decorators/roles.decorator'
-import { RolesEnum } from '../users/entities/user.entity'
+import { RolesEnum } from '../users/entities/roles.enum'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { QuestionsService } from './questions.service'
 import { QuestionDto } from './dto/question.dto'

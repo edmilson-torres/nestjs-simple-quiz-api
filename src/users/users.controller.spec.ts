@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
 import { PassportUser } from './types/passport-user.type'
-import { RolesEnum } from './entities/user.entity'
+import { RolesEnum } from './entities/roles.enum'
 import { JwtService } from '@nestjs/jwt'
 
 const createUserDto: CreateUserDto = {

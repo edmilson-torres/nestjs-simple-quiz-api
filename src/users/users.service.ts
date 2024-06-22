@@ -10,7 +10,8 @@ import { Repository } from 'typeorm'
 
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { RolesEnum, UserEntity } from './entities/user.entity'
+import { UserEntity } from './entities/user.entity'
+import { RolesEnum } from './entities/roles.enum'
 import { HashService } from '../shared/hash/hash.service'
 import { isAdmin } from './helpers/isAdmin'
 

@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsUUID } from 'class-validator'
-import { RolesEnum } from '../../users/entities/user.entity'
+import { RolesEnum } from '../../users/entities/roles.enum'
 
 export class PassportUserDto {
     @IsUUID()

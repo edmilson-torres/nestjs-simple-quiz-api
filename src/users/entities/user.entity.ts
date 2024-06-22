@@ -11,12 +11,7 @@ import {
     OneToMany
 } from 'typeorm'
 import { QuizEntity } from '../../quizzes/entities/quiz.entity'
-
-export enum RolesEnum {
-    User = 'user',
-    Admin = 'admin',
-    Moderator = 'moderator'
-}
+import { RolesEnum } from './roles.enum'
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {

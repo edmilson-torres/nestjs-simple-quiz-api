@@ -22,7 +22,7 @@ import { UpdateQuizDto } from './dto/update-quiz.dto'
 import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
 import { CurrentUser } from '../users/decorators/user.decorator'
 import { Roles } from '../auth/decorators/roles.decorator'
-import { RolesEnum } from '../users/entities/user.entity'
+import { RolesEnum } from '../users/entities/roles.enum'
 import { RolesGuard } from '../auth/guards/roles.guard'
 
 @ApiTags('Quizzes')

@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { RolesEnum, UserEntity } from '../users/entities/user.entity'
+import { RolesEnum } from '../users/entities/roles.enum'
+import { UserEntity } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 import { HashService } from '../shared/hash/hash.service'
 import { jwtConstants } from './auth.config'
