@@ -19,22 +19,25 @@ import { QuizzesService } from './quizzes.service'
 import { CreateQuizDto } from './dto/create-quiz.dto'
 import { UpdateQuizDto } from './dto/update-quiz.dto'
 
-import { Public } from '../auth/decorators/public.decorator'
 import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
+import { CurrentUser } from '../users/decorators/user.decorator'
+import { Roles } from '../auth/decorators/roles.decorator'
+import { RolesEnum } from '../users/entities/user.entity'
+import { RolesGuard } from '../auth/guards/roles.guard'
 
 @ApiTags('Quizzes')
 @ApiBearerAuth()
-@UseGuards(AuthGuardJwt)
+@UseGuards(AuthGuardJwt, RolesGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('quizzes')
 export class QuizzesController {
     constructor(private readonly quizzesService: QuizzesService) {}
 
-    @Public()
+    @Roles(RolesEnum.User, RolesEnum.Admin, RolesEnum.Moderator)
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() createQuizDto: CreateQuizDto) {
-        return this.quizzesService.create(createQuizDto)
+    create(@CurrentUser() user, @Body() createQuizDto: CreateQuizDto) {
+        return this.quizzesService.create(user.id, createQuizDto)
     }
 
     @Get()

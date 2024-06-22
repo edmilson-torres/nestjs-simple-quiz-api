@@ -8,14 +8,16 @@ import { UpdateQuizDto } from './dto/update-quiz.dto'
 import { CategoryEntity } from './entities/category.entity'
 import { QuestionEntity } from './entities/question.entity'
 import { AnswerEntity } from './entities/answer.entity'
+import { UserEntity } from '../users/entities/user.entity'
 
 @Injectable()
 export class QuizzesService {
     @InjectRepository(QuizEntity)
     private readonly quizzesRepository: Repository<QuizEntity>
 
-    create(payload: CreateQuizDto) {
+    create(id: string, payload: CreateQuizDto) {
         const quiz = this.quizzesRepository.create()
+        quiz.user = new UserEntity({ id })
         quiz.text = payload.text
         quiz.description = payload.description
         quiz.category = new CategoryEntity({ name: payload.category.name })
@@ -28,7 +30,7 @@ export class QuizzesService {
             })
 
             questions.push(
-                new QuestionEntity({ question: questionItem.question, answers })
+                new QuestionEntity({ text: questionItem.text, answers })
             )
         })
 
