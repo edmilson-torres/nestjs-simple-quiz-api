@@ -17,7 +17,7 @@ export class AnswerEntity extends BaseEntity {
     id: string
 
     @Column()
-    answer: string
+    text: string
 
     @Column({ default: false })
     isCorrect?: boolean
