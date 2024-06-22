@@ -22,9 +22,9 @@ import { UsersService } from './users.service'
 import { RolesEnum } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { PassportUser } from './types/passport-user.type'
 import { Public } from '../auth/decorators/public.decorator'
 import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
 @ApiTags('Users')
 @UseGuards(AuthGuardJwt, RolesGuard)
@@ -54,7 +54,7 @@ export class UsersController {
     @ApiOperation({ summary: 'get user by id' })
     @Get(':id')
     findOne(
-        @CurrentUser() user: PassportUser,
+        @CurrentUser() user: PassportUserDto,
         @Param('id', ParseUUIDPipe) id: string
     ) {
         return this.usersService.findOne(id, user)
@@ -66,7 +66,7 @@ export class UsersController {
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
     update(
-        @CurrentUser() user: PassportUser,
+        @CurrentUser() user: PassportUserDto,
         @Param('id', ParseUUIDPipe) id: string,
         @Body() payload: UpdateUserDto
     ) {
@@ -79,7 +79,7 @@ export class UsersController {
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(
-        @CurrentUser() user: PassportUser,
+        @CurrentUser() user: PassportUserDto,
         @Param('id', ParseUUIDPipe) id: string
     ) {
         return this.usersService.remove(id, user)
