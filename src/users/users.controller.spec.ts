@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
-import { PassportUser } from './types/passport-user.type'
 import { RolesEnum } from './entities/roles.enum'
 import { JwtService } from '@nestjs/jwt'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
 const createUserDto: CreateUserDto = {
     firstName: 'firstName #1',
@@ -13,7 +13,7 @@ const createUserDto: CreateUserDto = {
     password: 'Test.123456'
 }
 
-const req: PassportUser = {
+const req: PassportUserDto = {
     id: '1',
     email: 'teste@test.com',
     roles: [RolesEnum.User]
