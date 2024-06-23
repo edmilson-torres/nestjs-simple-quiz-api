@@ -19,8 +19,9 @@ import { Roles } from '../auth/decorators/roles.decorator'
 import { RolesEnum } from '../users/entities/roles.enum'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { QuestionsService } from './questions.service'
-import { QuestionDto } from './dto/question.dto'
+import { CreateQuestionDto } from './dto/create-question.dto'
 import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
+import { UpdateQuestionDto } from './dto/update-question.dto'
 
 @ApiTags('Questions')
 @ApiBearerAuth()
@@ -33,7 +34,7 @@ export class QuestionsController {
     @Roles(RolesEnum.Admin, RolesEnum.Moderator)
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() payload: QuestionDto) {
+    create(@Body() payload: CreateQuestionDto) {
         return this.questionService.create(payload)
     }
 
@@ -51,7 +52,7 @@ export class QuestionsController {
     @Patch(':id')
     update(
         @Param('id', ParseUUIDPipe) id: string,
-        @Body() payload: QuestionDto
+        @Body() payload: UpdateQuestionDto
     ) {
         return this.questionService.update(id, payload)
     }

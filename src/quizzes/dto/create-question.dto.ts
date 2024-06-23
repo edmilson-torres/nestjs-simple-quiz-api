@@ -7,12 +7,16 @@ import {
     IsArray,
     ArrayMaxSize,
     ArrayMinSize,
-    ValidateNested
+    ValidateNested,
+    IsOptional,
+    Validate
 } from 'class-validator'
 
 import { AnswerDto } from './answer.dto'
+import { UuidDto } from './uuid.dto'
+import { AnswersValidation } from '../helpers/answers.validation'
 
-export class QuestionDto {
+export class CreateQuestionDto {
     @ApiProperty()
     @IsString()
     @MinLength(10)
@@ -25,5 +29,12 @@ export class QuestionDto {
     @ArrayMinSize(2)
     @ValidateNested({ each: true })
     @Type(() => AnswerDto)
-    answers: AnswerDto[]
+    @Validate(AnswersValidation)
+    @IsOptional()
+    answers?: AnswerDto[]
+
+    @ApiProperty({ type: UuidDto })
+    @Type(() => UuidDto)
+    @ValidateNested()
+    quiz: UuidDto
 }

@@ -8,14 +8,15 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, TypeORMError } from 'typeorm'
 
 import { QuestionEntity } from './entities/question.entity'
-import { QuestionDto } from './dto/question.dto'
+import { CreateQuestionDto } from './dto/create-question.dto'
+import { UpdateQuestionDto } from './dto/update-question.dto'
 
 @Injectable()
 export class QuestionsService {
     @InjectRepository(QuestionEntity)
     private readonly questionsRepository: Repository<QuestionEntity>
 
-    async create(payload: QuestionDto) {
+    async create(payload: CreateQuestionDto) {
         const question = this.questionsRepository.create(payload)
 
         try {
@@ -23,6 +24,8 @@ export class QuestionsService {
 
             return new QuestionEntity(newQuestion)
         } catch (error) {
+            if (error instanceof TypeORMError) throw new ConflictException()
+
             throw new BadRequestException(error.message)
         }
     }
@@ -43,7 +46,7 @@ export class QuestionsService {
         return this.questionsRepository.find()
     }
 
-    async update(id: string, payload: QuestionDto) {
+    async update(id: string, payload: UpdateQuestionDto) {
         const questionChecked = await this.questionsRepository.exists({
             where: { id }
         })

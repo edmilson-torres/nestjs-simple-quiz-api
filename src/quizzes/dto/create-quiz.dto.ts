@@ -14,7 +14,7 @@ import {
 } from 'class-validator'
 
 import { CategoryDto } from './category.dto'
-import { QuestionDto } from './question.dto'
+import { CreateQuestionDto } from './create-question.dto'
 
 export class CreateQuizDto {
     @ApiProperty()
@@ -40,11 +40,11 @@ export class CreateQuizDto {
     @IsBoolean()
     isActive: boolean
 
-    @ApiProperty({ type: [QuestionDto], maxItems: 20, minItems: 1 })
+    @ApiProperty({ type: [CreateQuestionDto], maxItems: 20, minItems: 1 })
     @IsArray()
     @ArrayMinSize(1)
     @ArrayMaxSize(20)
     @ValidateNested({ each: true })
-    @Type(() => QuestionDto)
-    questions: QuestionDto[]
+    @Type(() => CreateQuestionDto)
+    questions: CreateQuestionDto[]
 }
