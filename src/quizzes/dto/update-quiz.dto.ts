@@ -13,7 +13,7 @@ import {
 export class UpdateCategoryDto {
     @ApiPropertyOptional()
     @IsOptional()
-    @IsUUID()
+    @IsUUID(4)
     id?: string
 }
 
