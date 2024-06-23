@@ -14,6 +14,7 @@ import { CategoryEntity } from './entities/category.entity'
 import { QuestionEntity } from './entities/question.entity'
 import { AnswerEntity } from './entities/answer.entity'
 import { UserEntity } from '../users/entities/user.entity'
+import { IsActiveDto } from './dto/isActive.dto'
 
 @Injectable()
 export class QuizzesService {
@@ -105,5 +106,25 @@ export class QuizzesService {
         }
 
         return null
+    }
+
+    async isActive(id: string, isActive: IsActiveDto) {
+        const quiz = await this.quizzesRepository.exists({
+            where: { id }
+        })
+
+        if (!quiz) {
+            throw new NotFoundException()
+        }
+
+        try {
+            await this.quizzesRepository.update({ id }, isActive)
+        } catch (error) {
+            if (error instanceof TypeORMError) throw new ConflictException()
+
+            throw new UnprocessableEntityException(error.message)
+        }
+
+        return new QuizEntity({ id, ...isActive })
     }
 }

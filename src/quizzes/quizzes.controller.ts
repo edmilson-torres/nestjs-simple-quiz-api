@@ -24,6 +24,7 @@ import { CurrentUser } from '../users/decorators/user.decorator'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { RolesEnum } from '../users/entities/roles.enum'
 import { RolesGuard } from '../auth/guards/roles.guard'
+import { IsActiveDto } from './dto/isActive.dto'
 
 @ApiTags('Quizzes')
 @ApiBearerAuth()
@@ -33,7 +34,6 @@ import { RolesGuard } from '../auth/guards/roles.guard'
 export class QuizzesController {
     constructor(private readonly quizzesService: QuizzesService) {}
 
-    @Roles(RolesEnum.User, RolesEnum.Admin, RolesEnum.Moderator)
     @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@CurrentUser() user, @Body() createQuizDto: CreateQuizDto) {
@@ -62,5 +62,14 @@ export class QuizzesController {
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(@Param('id', ParseUUIDPipe) id: string) {
         return this.quizzesService.remove(id)
+    }
+
+    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
+    @Patch('/isactive/:id')
+    isActive(
+        @Param('id', ParseUUIDPipe) id: string,
+        @Body() isActive: IsActiveDto
+    ) {
+        return this.quizzesService.isActive(id, isActive)
     }
 }
