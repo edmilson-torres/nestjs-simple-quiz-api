@@ -12,6 +12,8 @@ import {
 } from 'typeorm'
 import { QuizEntity } from '../../quizzes/entities/quiz.entity'
 import { RolesEnum } from './roles.enum'
+import { QuestionEntity } from '../../quizzes/entities/question.entity'
+import { AnswerEntity } from '../../quizzes/entities/answer.entity'
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
@@ -46,6 +48,12 @@ export class UserEntity extends BaseEntity {
 
     @OneToMany(() => QuizEntity, (quiz) => quiz.user)
     quizzes: QuizEntity[]
+
+    @OneToMany(() => QuestionEntity, (question) => question.user)
+    questions: QuestionEntity[]
+
+    @OneToMany(() => AnswerEntity, (answer) => answer.user)
+    answers: AnswerEntity[]
 
     @CreateDateColumn()
     @Exclude()

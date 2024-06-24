@@ -8,41 +8,43 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, TypeORMError } from 'typeorm'
 
 import { QuizEntity } from './entities/quiz.entity'
-import { CreateQuizDto } from './dto/create-quiz.dto'
 import { UpdateQuizDto } from './dto/update-quiz.dto'
 import { CategoryEntity } from './entities/category.entity'
 import { QuestionEntity } from './entities/question.entity'
 import { AnswerEntity } from './entities/answer.entity'
 import { UserEntity } from '../users/entities/user.entity'
 import { IsActiveDto } from './dto/isActive.dto'
+import { CreateQuizDto } from './dto/create-quiz.dto'
 
 @Injectable()
 export class QuizzesService {
     @InjectRepository(QuizEntity)
     private readonly quizzesRepository: Repository<QuizEntity>
 
-    create(id: string, payload: CreateQuizDto) {
-        const quiz = this.quizzesRepository.create()
-        quiz.user = new UserEntity({ id })
+    async create(userId: string, payload: CreateQuizDto) {
+        const user = new UserEntity({ id: userId })
+        const quiz = this.quizzesRepository.create(payload)
+
+        quiz.user = user
         quiz.text = payload.text
         quiz.description = payload.description
         quiz.category = new CategoryEntity({ name: payload.category.name })
 
-        const questions = []
-        payload.questions.forEach((questionItem) => {
-            const answers = []
-            questionItem.answers.forEach((answersItem) => {
-                answers.push(new AnswerEntity(answersItem))
+        const questions: QuestionEntity[] = []
+        payload.questions.forEach((question: QuestionEntity) => {
+            const answers: AnswerEntity[] = []
+            question.answers.forEach((answer: AnswerEntity) => {
+                answer.user = user
+                answers.push(new AnswerEntity(answer))
             })
 
-            questions.push(
-                new QuestionEntity({ text: questionItem.text, answers })
-            )
+            question.user = user
+            questions.push(new QuestionEntity({ ...question, answers }))
         })
 
         quiz.questions = questions
 
-        const response = this.quizzesRepository.save(quiz)
+        const response = await this.quizzesRepository.save(quiz)
 
         return response
     }

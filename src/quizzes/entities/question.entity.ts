@@ -13,6 +13,7 @@ import {
 
 import { QuizEntity } from './quiz.entity'
 import { AnswerEntity } from './answer.entity'
+import { UserEntity } from '../../users/entities/user.entity'
 
 @Entity({ name: 'question' })
 export class QuestionEntity extends BaseEntity {
@@ -26,6 +27,9 @@ export class QuestionEntity extends BaseEntity {
         onDelete: 'CASCADE'
     })
     quiz: QuizEntity
+
+    @ManyToOne(() => UserEntity)
+    user: UserEntity
 
     @OneToMany(() => AnswerEntity, (answer) => answer.question, {
         eager: true,

@@ -10,6 +10,7 @@ import {
     UpdateDateColumn
 } from 'typeorm'
 import { QuestionEntity } from './question.entity'
+import { UserEntity } from '../../users/entities/user.entity'
 
 @Entity({ name: 'answer' })
 export class AnswerEntity extends BaseEntity {
@@ -26,6 +27,9 @@ export class AnswerEntity extends BaseEntity {
         onDelete: 'CASCADE'
     })
     question: QuestionEntity
+
+    @ManyToOne(() => UserEntity)
+    user: UserEntity
 
     @CreateDateColumn()
     @Exclude()
