@@ -15,6 +15,7 @@ import { AnswerEntity } from './entities/answer.entity'
 import { UserEntity } from '../users/entities/user.entity'
 import { IsActiveDto } from './dto/isActive.dto'
 import { CreateQuizDto } from './dto/create-quiz.dto'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
 @Injectable()
 export class QuizzesService {
@@ -51,8 +52,19 @@ export class QuizzesService {
 
     findAll() {
         return this.quizzesRepository.find({
+            select: {
+                id: true,
+                text: true,
+                description: true,
+                user: {
+                    firstName: true
+                },
+                category: {
+                    name: true
+                }
+            },
             where: { isActive: true },
-            relations: ['category'],
+            relations: ['category', 'user'],
             loadEagerRelations: false
         })
     }
@@ -66,10 +78,10 @@ export class QuizzesService {
         return quiz
     }
 
-    async update(id: string, payload: UpdateQuizDto) {
+    async update(id: string, payload: UpdateQuizDto, user: PassportUserDto) {
         const quiz = await this.quizzesRepository.findOne({
-            where: { id },
-            relations: ['category'],
+            where: { id, user: { id: user.id } },
+            relations: ['category', 'user'],
             loadEagerRelations: false
         })
 
@@ -90,9 +102,9 @@ export class QuizzesService {
         return quizUpdated
     }
 
-    async remove(id: string) {
+    async remove(id: string, user: PassportUserDto) {
         const quiz = await this.quizzesRepository.exists({
-            where: { id }
+            where: { id, user: { id: user.id } }
         })
 
         if (!quiz) {

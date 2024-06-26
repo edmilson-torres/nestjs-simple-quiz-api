@@ -25,6 +25,7 @@ import { Roles } from '../auth/decorators/roles.decorator'
 import { RolesEnum } from '../users/entities/roles.enum'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { IsActiveDto } from './dto/isActive.dto'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
 @ApiTags('Quizzes')
 @ApiBearerAuth()
@@ -52,16 +53,20 @@ export class QuizzesController {
 
     @Patch(':id')
     update(
+        @CurrentUser() user: PassportUserDto,
         @Param('id', ParseUUIDPipe) id: string,
         @Body() updateQuizDto: UpdateQuizDto
     ) {
-        return this.quizzesService.update(id, updateQuizDto)
+        return this.quizzesService.update(id, updateQuizDto, user)
     }
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Param('id', ParseUUIDPipe) id: string) {
-        return this.quizzesService.remove(id)
+    remove(
+        @Param('id', ParseUUIDPipe) id: string,
+        @CurrentUser() user: PassportUserDto
+    ) {
+        return this.quizzesService.remove(id, user)
     }
 
     @Roles(RolesEnum.Admin, RolesEnum.Moderator)
