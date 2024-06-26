@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt'
 
 import { QuizzesController } from './quizzes.controller'
 import { QuizzesService } from './quizzes.service'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
 describe('QuizzesController', () => {
     let quizzesController: QuizzesController
@@ -30,7 +31,14 @@ describe('QuizzesController', () => {
     })
 
     it('should remove the quiz by id', () => {
-        quizzesController.remove('1')
+        const user: PassportUserDto = {
+            id: '',
+            email: '',
+            roles: []
+        }
+
+        quizzesController.remove('cc018e94-c33d-4208-b26c-c5cfa88b742f', user)
+
         expect(quizzesService.remove).toHaveBeenCalled()
     })
 })

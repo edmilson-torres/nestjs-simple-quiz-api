@@ -3,6 +3,7 @@ import { QuizzesService } from './quizzes.service'
 import { QuizEntity } from './entities/quiz.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
 describe('QuizzesService', () => {
     let service: QuizzesService
@@ -34,7 +35,13 @@ describe('QuizzesService', () => {
 
     it('should remove a quiz by id', async () => {
         jest.spyOn(repository, 'exists').mockReturnValue(Promise.resolve(true))
-
-        expect(await service.remove('1')).toBeNull()
+        const user: PassportUserDto = {
+            id: '',
+            email: '',
+            roles: []
+        }
+        expect(
+            await service.remove('cc018e94-c33d-4208-b26c-c5cfa88b742f', user)
+        ).toBeNull()
     })
 })
