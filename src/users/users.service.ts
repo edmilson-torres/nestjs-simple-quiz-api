@@ -81,24 +81,24 @@ export class UsersService {
     }
 
     async findOneByEmail(email: string) {
-        const user = await this.usersRepository.findOne({
-            where: { email },
-            select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-                roles: true,
-                password: true,
-                refreshToken: true
-            }
-        })
+        try {
+            const user = await this.usersRepository.findOne({
+                where: { email },
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    roles: true,
+                    password: true,
+                    refreshToken: true
+                }
+            })
 
-        if (!user) {
-            throw new NotFoundException()
+            return user
+        } catch (error) {
+            throw new BadRequestException(error.message)
         }
-
-        return new UserEntity(user)
     }
 
     async findOneById(id: string) {
@@ -185,6 +185,11 @@ export class UsersService {
             if (!user) {
                 throw new NotFoundException()
             }
+
+            const passwordString = Math.random().toString(36).slice(-8)
+            const passwordHash = await this.hashing.hash(passwordString)
+
+            await this.usersRepository.update(id, { password: passwordHash })
 
             await this.usersRepository.softDelete(id)
 
