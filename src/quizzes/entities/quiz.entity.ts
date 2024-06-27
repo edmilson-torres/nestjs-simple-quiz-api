@@ -29,7 +29,7 @@ export class QuizEntity extends BaseEntity {
     @Column({ default: true })
     isActive?: boolean
 
-    @ManyToOne(() => UserEntity)
+    @ManyToOne(() => UserEntity, { eager: true })
     user: UserEntity
 
     @ManyToOne(() => CategoryEntity, (category) => category.quizzes, {

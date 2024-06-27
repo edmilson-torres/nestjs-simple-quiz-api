@@ -53,14 +53,9 @@ export class QuizzesService {
     findAll() {
         return this.quizzesRepository.find({
             select: {
-                id: true,
-                text: true,
-                description: true,
+                isActive: false,
                 user: {
                     firstName: true
-                },
-                category: {
-                    name: true
                 }
             },
             where: { isActive: true },
@@ -70,7 +65,12 @@ export class QuizzesService {
     }
 
     async findOne(id: string) {
-        const quiz = await this.quizzesRepository.findOne({ where: { id } })
+        const quiz = await this.quizzesRepository.findOne({
+            select: { user: { firstName: true } },
+            where: { id },
+            relations: ['category', 'user'],
+            loadEagerRelations: false
+        })
 
         if (!quiz) {
             throw new NotFoundException()
