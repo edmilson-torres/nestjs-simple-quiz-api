@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Exclude, Transform } from 'class-transformer'
+import { Transform } from 'class-transformer'
 import {
     IsEmail,
     MinLength,
@@ -38,7 +38,6 @@ export class CreateUserDto {
     @MaxLength(25)
     @NotContains(' ', { message: 'password can not contains spaces' })
     @Transform(({ value }) => value.trim())
-    @Exclude({ toPlainOnly: true })
     password: string
 
     @ApiPropertyOptional()
