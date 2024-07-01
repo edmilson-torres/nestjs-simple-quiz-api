@@ -38,11 +38,9 @@ export class QuestionEntity extends BaseEntity {
     answers: AnswerEntity[]
 
     @CreateDateColumn()
-    @Exclude()
     createdAt: Date
 
     @UpdateDateColumn()
-    @Exclude()
     updatedAt: Date
 
     @DeleteDateColumn()

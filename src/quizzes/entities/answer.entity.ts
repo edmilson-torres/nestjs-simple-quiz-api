@@ -32,11 +32,9 @@ export class AnswerEntity extends BaseEntity {
     user: UserEntity
 
     @CreateDateColumn()
-    @Exclude()
     createdAt: Date
 
     @UpdateDateColumn()
-    @Exclude()
     updatedAt: Date
 
     @DeleteDateColumn()

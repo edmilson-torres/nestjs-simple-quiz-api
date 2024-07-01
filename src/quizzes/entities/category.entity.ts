@@ -23,11 +23,9 @@ export class CategoryEntity extends BaseEntity {
     quizzes: QuizEntity[]
 
     @CreateDateColumn()
-    @Exclude()
     createdAt: Date
 
     @UpdateDateColumn()
-    @Exclude()
     updatedAt: Date
 
     @DeleteDateColumn()

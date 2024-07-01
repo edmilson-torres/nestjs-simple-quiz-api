@@ -46,11 +46,9 @@ export class QuizEntity extends BaseEntity {
     questions: QuestionEntity[]
 
     @CreateDateColumn()
-    @Exclude()
     createdAt: Date
 
     @UpdateDateColumn()
-    @Exclude()
     updatedAt: Date
 
     @DeleteDateColumn()
