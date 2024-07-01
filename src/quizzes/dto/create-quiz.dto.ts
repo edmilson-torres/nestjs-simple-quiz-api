@@ -9,8 +9,7 @@ import {
     ArrayMaxSize,
     ArrayMinSize,
     MinLength,
-    MaxLength,
-    IsObject
+    MaxLength
 } from 'class-validator'
 
 import { CategoryDto } from './category.dto'
@@ -31,8 +30,8 @@ export class CreateQuizDto {
     description?: string
 
     @ApiProperty()
+    @ValidateNested({ each: true })
     @Type(() => CategoryDto)
-    @IsObject()
     category: CategoryDto
 
     @ApiPropertyOptional()
