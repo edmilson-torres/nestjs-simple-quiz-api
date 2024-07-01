@@ -59,15 +59,7 @@ export class UsersService {
 
         if (admin || reqUser.id === id) {
             const user = await this.usersRepository.findOne({
-                where: { id },
-                select: {
-                    id: true,
-                    firstName: true,
-                    lastName: true,
-                    email: true,
-                    roles: true,
-                    refreshToken: true
-                }
+                where: { id }
             })
 
             if (!user) {

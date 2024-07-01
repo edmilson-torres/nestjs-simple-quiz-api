@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer'
+import { Exclude, Expose } from 'class-transformer'
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -18,15 +18,19 @@ import { AnswerEntity } from '../../quizzes/entities/answer.entity'
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
+    @Expose({ groups: ['all'] })
     id: string
 
     @Column()
+    @Expose({ groups: ['all'] })
     firstName: string
 
     @Column()
+    @Expose({ groups: ['all'] })
     lastName: string
 
     @Column()
+    @Expose({ groups: ['self'] })
     @Index({ where: '"deletedAt" IS NULL', unique: true })
     email: string
 
@@ -36,6 +40,7 @@ export class UserEntity extends BaseEntity {
         array: true,
         default: [RolesEnum.User]
     })
+    @Expose({ groups: ['self'] })
     roles: RolesEnum[]
 
     @Column()
@@ -56,11 +61,11 @@ export class UserEntity extends BaseEntity {
     answers: AnswerEntity[]
 
     @CreateDateColumn()
-    @Exclude()
+    @Expose({ groups: ['self'] })
     createdAt: Date
 
     @UpdateDateColumn()
-    @Exclude()
+    @Expose({ groups: ['self'] })
     updatedAt: Date
 
     @DeleteDateColumn()

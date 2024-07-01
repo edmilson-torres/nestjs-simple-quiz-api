@@ -11,7 +11,8 @@ import {
     ClassSerializerInterceptor,
     UseInterceptors,
     ParseUUIDPipe,
-    UseGuards
+    UseGuards,
+    SerializeOptions
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
@@ -41,11 +42,13 @@ export class QuizzesController {
         return this.quizzesService.create(user.id, createQuizDto)
     }
 
+    @SerializeOptions({ groups: ['all'] })
     @Get()
     findAll() {
         return this.quizzesService.findAll()
     }
 
+    @SerializeOptions({ groups: ['all'] })
     @Get(':id')
     findOne(@Param('id', ParseUUIDPipe) id: string) {
         return this.quizzesService.findOne(id)

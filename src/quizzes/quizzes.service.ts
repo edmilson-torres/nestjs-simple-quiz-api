@@ -53,9 +53,14 @@ export class QuizzesService {
     findAll() {
         return this.quizzesRepository.find({
             select: {
-                isActive: false,
                 user: {
-                    firstName: true
+                    id: true,
+                    firstName: true,
+                    lastName: true
+                },
+                category: {
+                    name: true,
+                    id: true
                 }
             },
             where: { isActive: true },
@@ -66,16 +71,16 @@ export class QuizzesService {
 
     async findOne(id: string) {
         const quiz = await this.quizzesRepository.findOne({
-            select: { user: { firstName: true } },
-            where: { id },
-            relations: ['category', 'user'],
-            loadEagerRelations: false
+            where: { id }
         })
 
         if (!quiz) {
             throw new NotFoundException()
         }
-        return quiz
+
+        quiz.user = new UserEntity(quiz.user)
+
+        return new QuizEntity(quiz)
     }
 
     async update(id: string, payload: UpdateQuizDto, user: PassportUserDto) {

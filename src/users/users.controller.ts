@@ -11,7 +11,8 @@ import {
     ParseUUIDPipe,
     UseGuards,
     ClassSerializerInterceptor,
-    UseInterceptors
+    UseInterceptors,
+    SerializeOptions
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 
@@ -35,6 +36,7 @@ export class UsersController {
 
     @ApiOperation({ summary: 'create a new user' })
     @Public()
+    @SerializeOptions({ groups: ['self', 'all'] })
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() payload: CreateUserDto) {
@@ -42,16 +44,18 @@ export class UsersController {
     }
 
     @ApiBearerAuth()
-    @Roles(RolesEnum.Admin)
     @ApiOperation({ summary: 'list all users' })
+    @Roles(RolesEnum.Admin)
+    @SerializeOptions({ groups: ['self', 'all'] })
     @Get()
     findAll() {
         return this.usersService.findAll()
     }
 
     @ApiBearerAuth()
-    @Roles(RolesEnum.User, RolesEnum.Admin)
     @ApiOperation({ summary: 'get user by id' })
+    @Roles(RolesEnum.User, RolesEnum.Admin)
+    @SerializeOptions({ groups: ['self', 'all'] })
     @Get(':id')
     findOne(
         @CurrentUser() user: PassportUserDto,
@@ -61,8 +65,9 @@ export class UsersController {
     }
 
     @ApiBearerAuth()
-    @Roles(RolesEnum.User, RolesEnum.Admin)
     @ApiOperation({ summary: 'update a user by id' })
+    @Roles(RolesEnum.User, RolesEnum.Admin)
+    @SerializeOptions({ groups: ['self', 'all'] })
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
     update(
@@ -74,8 +79,8 @@ export class UsersController {
     }
 
     @ApiBearerAuth()
-    @Roles(RolesEnum.User, RolesEnum.Admin)
     @ApiOperation({ summary: 'delete a user by id' })
+    @Roles(RolesEnum.User, RolesEnum.Admin)
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(
