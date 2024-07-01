@@ -1,9 +1,7 @@
-import { Exclude } from 'class-transformer'
 import {
     BaseEntity,
     Column,
     CreateDateColumn,
-    DeleteDateColumn,
     Entity,
     ManyToOne,
     PrimaryGeneratedColumn,
@@ -36,10 +34,6 @@ export class AnswerEntity extends BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date
-
-    @DeleteDateColumn()
-    @Exclude()
-    deletedAt: Date
 
     constructor(partial: Partial<AnswerEntity>) {
         super()
