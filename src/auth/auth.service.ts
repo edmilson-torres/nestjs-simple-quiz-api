@@ -13,7 +13,6 @@ import { jwtConstants } from './auth.config'
 
 export interface JwtTokenPayload {
     sub: string
-    email: string
     roles: RolesEnum[]
     iat?: number
     exp?: number
@@ -80,7 +79,6 @@ export class AuthService {
     async login(user: Partial<UserEntity>): Promise<UserTokens> {
         const payload: JwtTokenPayload = {
             sub: user.id,
-            email: user.email,
             roles: user.roles
         }
 
@@ -118,7 +116,6 @@ export class AuthService {
 
         const payload: JwtTokenPayload = {
             sub: user.id,
-            email: user.email,
             roles: user.roles
         }
 
