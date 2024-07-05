@@ -16,11 +16,11 @@ import {
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 
-import { RolesGuard } from '../auth/guards/roles.guard'
-import { Roles } from '../auth/decorators/roles.decorator'
+import { RoleGuard } from '../auth/guards/roles.guard'
+import { Roles } from '../auth/decorators/role.decorator'
 import { CurrentUser } from './decorators/user.decorator'
 import { UsersService } from './users.service'
-import { RolesEnum } from './entities/roles.enum'
+import { RoleEnum } from './entities/role.enum'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { Public } from '../auth/decorators/public.decorator'
@@ -28,7 +28,7 @@ import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
 @ApiTags('Users')
-@UseGuards(AuthGuardJwt, RolesGuard)
+@UseGuards(AuthGuardJwt, RoleGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UsersController {
@@ -45,7 +45,7 @@ export class UsersController {
 
     @ApiBearerAuth()
     @ApiOperation({ summary: 'list all users' })
-    @Roles(RolesEnum.Admin)
+    @Roles(RoleEnum.Admin)
     @SerializeOptions({ groups: ['self', 'all'] })
     @Get()
     findAll() {
@@ -54,7 +54,7 @@ export class UsersController {
 
     @ApiBearerAuth()
     @ApiOperation({ summary: 'get user by id' })
-    @Roles(RolesEnum.User, RolesEnum.Admin)
+    @Roles(RoleEnum.User, RoleEnum.Admin)
     @SerializeOptions({ groups: ['self', 'all'] })
     @Get(':id')
     findOne(
@@ -66,7 +66,7 @@ export class UsersController {
 
     @ApiBearerAuth()
     @ApiOperation({ summary: 'update a user by id' })
-    @Roles(RolesEnum.User, RolesEnum.Admin)
+    @Roles(RoleEnum.User, RoleEnum.Admin)
     @SerializeOptions({ groups: ['self', 'all'] })
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
@@ -80,7 +80,7 @@ export class UsersController {
 
     @ApiBearerAuth()
     @ApiOperation({ summary: 'delete a user by id' })
-    @Roles(RolesEnum.User, RolesEnum.Admin)
+    @Roles(RoleEnum.User, RoleEnum.Admin)
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(

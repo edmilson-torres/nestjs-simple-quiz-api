@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsUUID } from 'class-validator'
-import { RolesEnum } from '../../users/entities/roles.enum'
+import { RoleEnum } from '../../users/entities/role.enum'
 
 export class PassportUserDto {
     @IsUUID(4)
@@ -8,6 +8,6 @@ export class PassportUserDto {
     @IsEmail()
     email: string
 
-    @IsEnum(RolesEnum)
-    roles: RolesEnum[]
+    @IsEnum(RoleEnum)
+    role: RoleEnum
 }

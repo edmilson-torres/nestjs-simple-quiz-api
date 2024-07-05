@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { RolesEnum } from '../users/entities/roles.enum'
+import { RoleEnum } from '../users/entities/role.enum'
 import { UserEntity } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 import { HashService } from '../shared/hash/hash.service'
@@ -13,7 +13,7 @@ import { jwtConstants } from './auth.config'
 
 export interface JwtTokenPayload {
     sub: string
-    roles: RolesEnum[]
+    role: RoleEnum
     iat?: number
     exp?: number
 }
@@ -79,7 +79,7 @@ export class AuthService {
     async login(user: Partial<UserEntity>): Promise<UserTokens> {
         const payload: JwtTokenPayload = {
             sub: user.id,
-            roles: user.roles
+            role: user.role
         }
 
         const { access_token, refresh_token } =
@@ -116,7 +116,7 @@ export class AuthService {
 
         const payload: JwtTokenPayload = {
             sub: user.id,
-            roles: user.roles
+            role: user.role
         }
 
         const { access_token, refresh_token } =

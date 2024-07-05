@@ -11,7 +11,7 @@ import {
     OneToMany
 } from 'typeorm'
 import { QuizEntity } from '../../quizzes/entities/quiz.entity'
-import { RolesEnum } from './roles.enum'
+import { RoleEnum } from './role.enum'
 import { QuestionEntity } from '../../quizzes/entities/question.entity'
 import { AnswerEntity } from '../../quizzes/entities/answer.entity'
 
@@ -36,12 +36,11 @@ export class UserEntity extends BaseEntity {
 
     @Column({
         type: 'enum',
-        enum: RolesEnum,
-        array: true,
-        default: [RolesEnum.User]
+        enum: RoleEnum,
+        default: RoleEnum.User
     })
     @Expose({ groups: ['self'] })
-    roles: RolesEnum[]
+    role: RoleEnum
 
     @Column()
     @Exclude({ toPlainOnly: true })

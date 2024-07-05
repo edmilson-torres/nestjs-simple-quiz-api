@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
-import { RolesEnum } from './entities/roles.enum'
+import { RoleEnum } from './entities/role.enum'
 import { JwtService } from '@nestjs/jwt'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
 
@@ -16,7 +16,7 @@ const createUserDto: CreateUserDto = {
 const req: PassportUserDto = {
     id: '1',
     email: 'teste@test.com',
-    roles: [RolesEnum.User]
+    role: RoleEnum.User
 }
 
 describe('UsersController', () => {

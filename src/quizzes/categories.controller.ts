@@ -17,20 +17,20 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { CategoriesService } from './categories.service'
 import { CategoryDto } from './dto/category.dto'
-import { Roles } from '../auth/decorators/roles.decorator'
-import { RolesEnum } from '../users/entities/roles.enum'
-import { RolesGuard } from '../auth/guards/roles.guard'
+import { Roles } from '../auth/decorators/role.decorator'
+import { RoleEnum } from '../users/entities/role.enum'
+import { RoleGuard } from '../auth/guards/roles.guard'
 import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
 
 @ApiTags('Categories')
 @ApiBearerAuth()
-@UseGuards(AuthGuardJwt, RolesGuard)
+@UseGuards(AuthGuardJwt, RoleGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('categories')
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
-    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
+    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@Body() payload: CategoryDto) {
@@ -47,7 +47,7 @@ export class CategoriesController {
         return this.categoriesService.findOne(id)
     }
 
-    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
+    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Patch(':id')
     update(
         @Param('id', ParseUUIDPipe) id: string,
@@ -56,7 +56,7 @@ export class CategoriesController {
         return this.categoriesService.update(id, payload)
     }
 
-    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
+    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(@Param('id', ParseUUIDPipe) id: string) {

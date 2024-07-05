@@ -4,6 +4,7 @@ import { QuizEntity } from './entities/quiz.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { RoleEnum } from '../users/entities/role.enum'
 
 describe('QuizzesService', () => {
     let service: QuizzesService
@@ -38,7 +39,7 @@ describe('QuizzesService', () => {
         const user: PassportUserDto = {
             id: '',
             email: '',
-            roles: []
+            role: RoleEnum.User
         }
         expect(
             await service.remove('cc018e94-c33d-4208-b26c-c5cfa88b742f', user)

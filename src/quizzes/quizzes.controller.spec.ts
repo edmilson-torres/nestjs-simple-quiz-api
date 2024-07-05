@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt'
 import { QuizzesController } from './quizzes.controller'
 import { QuizzesService } from './quizzes.service'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { RoleEnum } from '../users/entities/role.enum'
 
 describe('QuizzesController', () => {
     let quizzesController: QuizzesController
@@ -34,7 +35,7 @@ describe('QuizzesController', () => {
         const user: PassportUserDto = {
             id: '',
             email: '',
-            roles: []
+            role: RoleEnum.User
         }
 
         quizzesController.remove('cc018e94-c33d-4208-b26c-c5cfa88b742f', user)

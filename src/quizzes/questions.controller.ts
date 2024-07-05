@@ -15,9 +15,9 @@ import {
 } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
-import { Roles } from '../auth/decorators/roles.decorator'
-import { RolesEnum } from '../users/entities/roles.enum'
-import { RolesGuard } from '../auth/guards/roles.guard'
+import { Roles } from '../auth/decorators/role.decorator'
+import { RoleEnum } from '../users/entities/role.enum'
+import { RoleGuard } from '../auth/guards/roles.guard'
 import { QuestionsService } from './questions.service'
 import { CreateQuestionDto } from './dto/create-question.dto'
 import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
@@ -25,13 +25,13 @@ import { UpdateQuestionDto } from './dto/update-question.dto'
 
 @ApiTags('Questions')
 @ApiBearerAuth()
-@UseGuards(AuthGuardJwt, RolesGuard)
+@UseGuards(AuthGuardJwt, RoleGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('questions')
 export class QuestionsController {
     constructor(private readonly questionService: QuestionsService) {}
 
-    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
+    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@Body() payload: CreateQuestionDto) {
@@ -48,7 +48,7 @@ export class QuestionsController {
         return this.questionService.findOne(id)
     }
 
-    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
+    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Patch(':id')
     update(
         @Param('id', ParseUUIDPipe) id: string,
@@ -57,7 +57,7 @@ export class QuestionsController {
         return this.questionService.update(id, payload)
     }
 
-    @Roles(RolesEnum.Admin, RolesEnum.Moderator)
+    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(@Param('id', ParseUUIDPipe) id: string) {

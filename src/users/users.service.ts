@@ -11,7 +11,7 @@ import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserEntity } from './entities/user.entity'
-import { RolesEnum } from './entities/roles.enum'
+import { RoleEnum } from './entities/role.enum'
 import { HashService } from '../shared/hash/hash.service'
 import { isAdmin } from './helpers/isAdmin'
 
@@ -24,7 +24,7 @@ export class UsersService {
     ) {}
 
     async create(payload: CreateUserDto): Promise<Partial<UserEntity>> {
-        payload.roles = [RolesEnum.User]
+        payload.role = RoleEnum.User
 
         const password = await this.hashing.hash(payload.password)
 
@@ -49,13 +49,13 @@ export class UsersService {
                 firstName: true,
                 lastName: true,
                 email: true,
-                roles: true
+                role: true
             }
         })
     }
 
     async findOne(id: string, reqUser: Partial<UserEntity>) {
-        const admin = isAdmin(reqUser.roles)
+        const admin = isAdmin(reqUser.role)
 
         if (admin || reqUser.id === id) {
             const user = await this.usersRepository.findOne({
@@ -81,7 +81,7 @@ export class UsersService {
                     firstName: true,
                     lastName: true,
                     email: true,
-                    roles: true,
+                    role: true,
                     password: true,
                     refreshToken: true
                 }
@@ -101,7 +101,7 @@ export class UsersService {
                 firstName: true,
                 lastName: true,
                 email: true,
-                roles: true,
+                role: true,
                 password: true,
                 refreshToken: true
             }
@@ -119,7 +119,7 @@ export class UsersService {
         payload: UpdateUserDto,
         reqUser: Partial<UserEntity>
     ): Promise<Partial<UserEntity> | null> {
-        const admin = isAdmin(reqUser.roles)
+        const admin = isAdmin(reqUser.role)
 
         if (admin || reqUser.id === id) {
             const user = await this.usersRepository.findOne({
@@ -146,7 +146,7 @@ export class UsersService {
             }
 
             if (!admin) {
-                payload.roles = undefined
+                payload.role = undefined
             }
 
             const updateData: Partial<UserEntity> = new UserEntity({
@@ -167,7 +167,7 @@ export class UsersService {
     }
 
     async remove(id: string, reqUser: Partial<UserEntity>) {
-        const admin = isAdmin(reqUser.roles)
+        const admin = isAdmin(reqUser.role)
 
         if (admin || reqUser.id === id) {
             const user = await this.usersRepository.exists({

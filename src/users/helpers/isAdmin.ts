@@ -1,7 +1,7 @@
-import { RolesEnum } from '../entities/roles.enum'
+import { RoleEnum } from '../entities/role.enum'
 
-export const isAdmin = (roles: RolesEnum[]) => {
-    if (!Array.isArray(roles) || roles.length === 0) return false
+export const isAdmin = (role: RoleEnum) => {
+    if (!Array.isArray(role) || role.length === 0) return false
 
-    return roles.some((role) => role === RolesEnum.Admin)
+    return role.some((role) => role === RoleEnum.Admin)
 }

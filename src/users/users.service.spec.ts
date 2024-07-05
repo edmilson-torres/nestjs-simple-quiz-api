@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { UserEntity } from './entities/user.entity'
-import { RolesEnum } from './entities/roles.enum'
+import { RoleEnum } from './entities/role.enum'
 import { UsersService } from './users.service'
 import { HashModule } from '../shared/hash/hash.module'
 
@@ -12,13 +12,13 @@ const userArray = [
         firstName: 'firstName #1',
         lastName: 'lastName #1',
         email: 'teste@teste1.com',
-        roles: ['user']
+        role: ['user']
     },
     {
         firstName: 'firstName #2',
         lastName: 'lastName #2',
         email: 'teste@teste2.com',
-        roles: ['user']
+        role: ['user']
     }
 ]
 
@@ -26,10 +26,10 @@ const oneUser = {
     firstName: 'firstName #1',
     lastName: 'lastName #1',
     email: 'teste@teste.com',
-    roles: ['user']
+    role: 'user'
 }
 
-const req = { id: '1', email: 'teste@test.com', roles: [RolesEnum.User] }
+const req = { id: '1', email: 'teste@test.com', role: RoleEnum.User }
 
 describe('UserService', () => {
     let service: UsersService
@@ -78,13 +78,13 @@ describe('UserService', () => {
                     lastName: 'lastName #1',
                     email: 'teste@teste.com',
                     password: '123456',
-                    roles: [RolesEnum.Admin]
+                    role: RoleEnum.Admin
                 })
             ).resolves.toEqual({
                 firstName: 'firstName #1',
                 lastName: 'lastName #1',
                 email: 'teste@teste.com',
-                roles: [RolesEnum.User]
+                role: RoleEnum.User
             })
         })
     })
