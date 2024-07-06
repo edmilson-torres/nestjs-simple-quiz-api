@@ -19,11 +19,25 @@ export class ServerCaslService {
             builder.can(Action.Manage, 'all')
         }
 
-        this.buildQuizAbilityForUser(builder)
+        this.buildUserAbilityForUser(user, builder)
+            .buildQuizAbilityForUser(builder)
             .buildCategoryAbilityForUser(user, builder)
             .buildQuestionAbilityForUser(builder)
             .buildAnswerAbilityForUser(builder)
         return builder.build()
+    }
+
+    private buildUserAbilityForUser(
+        user: AuthorizedUser,
+        builder: AbilityBuilder<MongoAbility>
+    ): this {
+        builder.can(Action.Create, Subject.User)
+        builder.can(Action.List, Subject.User)
+        builder.can(Action.Read, Subject.User)
+        builder.can(Action.Update, Subject.User, { id: user.id })
+        builder.can(Action.Delete, Subject.User, { id: user.id })
+
+        return this
     }
 
     private buildQuizAbilityForUser(
@@ -55,6 +69,7 @@ export class ServerCaslService {
     private buildQuestionAbilityForUser(
         builder: AbilityBuilder<MongoAbility>
     ): this {
+        builder.can(Action.Create, Subject.Question)
         builder.can(Action.Read, Subject.Question)
         builder.can(Action.Update, Subject.Question)
         builder.can(Action.Delete, Subject.Question)
@@ -65,6 +80,7 @@ export class ServerCaslService {
     private buildAnswerAbilityForUser(
         builder: AbilityBuilder<MongoAbility>
     ): this {
+        builder.can(Action.Create, Subject.Answer)
         builder.can(Action.Read, Subject.Answer)
         builder.can(Action.Update, Subject.Answer)
         builder.can(Action.Delete, Subject.Answer)

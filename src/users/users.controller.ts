@@ -26,6 +26,10 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { Public } from '../auth/decorators/public.decorator'
 import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { CaslGuard } from '../casl/casl.guard'
+import { Casl } from '../casl/casl.decorator'
+import { Action } from '../casl/action.enum'
+import { Subject } from '../casl/subject.enum'
 
 @ApiTags('Users')
 @UseGuards(AuthGuardJwt, RoleGuard)
@@ -46,6 +50,8 @@ export class UsersController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'list all users' })
     @Roles(RoleEnum.Admin)
+    @UseGuards(CaslGuard)
+    @Casl([Action.List, Subject.User])
     @SerializeOptions({ groups: ['self', 'all'] })
     @Get()
     findAll() {
@@ -54,7 +60,8 @@ export class UsersController {
 
     @ApiBearerAuth()
     @ApiOperation({ summary: 'get user by id' })
-    @Roles(RoleEnum.User, RoleEnum.Admin)
+    @UseGuards(CaslGuard)
+    @Casl([Action.Read, Subject.User])
     @SerializeOptions({ groups: ['self', 'all'] })
     @Get(':id')
     findOne(
@@ -66,7 +73,8 @@ export class UsersController {
 
     @ApiBearerAuth()
     @ApiOperation({ summary: 'update a user by id' })
-    @Roles(RoleEnum.User, RoleEnum.Admin)
+    @UseGuards(CaslGuard)
+    @Casl([Action.Update, Subject.User])
     @SerializeOptions({ groups: ['self', 'all'] })
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
@@ -80,7 +88,8 @@ export class UsersController {
 
     @ApiBearerAuth()
     @ApiOperation({ summary: 'delete a user by id' })
-    @Roles(RoleEnum.User, RoleEnum.Admin)
+    @UseGuards(CaslGuard)
+    @Casl([Action.Delete, Subject.User])
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(

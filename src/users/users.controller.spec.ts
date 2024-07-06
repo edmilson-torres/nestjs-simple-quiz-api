@@ -5,6 +5,7 @@ import { UsersService } from './users.service'
 import { RoleEnum } from './entities/role.enum'
 import { JwtService } from '@nestjs/jwt'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { ServerCaslService } from '../casl/casl.service'
 
 const createUserDto: CreateUserDto = {
     firstName: 'firstName #1',
@@ -56,7 +57,8 @@ describe('UsersController', () => {
                         ),
                         remove: jest.fn()
                     }
-                }
+                },
+                ServerCaslService
             ]
         }).compile()
 
