@@ -15,6 +15,7 @@ import { QuestionsController } from './questions.controller'
 import { AnswerController } from './answers.controller'
 import { QuestionsService } from './questions.service'
 import { AnswerService } from './answers.service'
+import { ServerCaslModule } from '../casl/casl.module'
 
 @Module({
     imports: [
@@ -24,7 +25,8 @@ import { AnswerService } from './answers.service'
             QuestionEntity,
             AnswerEntity
         ]),
-        DatabaseModule
+        DatabaseModule,
+        ServerCaslModule
     ],
     controllers: [
         QuizzesController,

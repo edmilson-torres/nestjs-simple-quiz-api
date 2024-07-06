@@ -17,37 +17,45 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { CategoriesService } from './categories.service'
 import { CategoryDto } from './dto/category.dto'
+import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
+import { RoleGuard } from '../auth/guards/roles.guard'
 import { Roles } from '../auth/decorators/role.decorator'
 import { RoleEnum } from '../users/entities/role.enum'
-import { RoleGuard } from '../auth/guards/roles.guard'
-import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
+import { CaslGuard } from '../casl/casl.guard'
+import { Casl } from '../casl/casl.decorator'
+import { Action } from '../casl/action.enum'
+import { Subject } from '../casl/subject.enum'
 
 @ApiTags('Categories')
 @ApiBearerAuth()
-@UseGuards(AuthGuardJwt, RoleGuard)
+@UseGuards(AuthGuardJwt, RoleGuard, CaslGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('categories')
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
     @Roles(RoleEnum.Admin, RoleEnum.Moderator)
+    @Casl([Action.Create, Subject.Category])
     @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@Body() payload: CategoryDto) {
         return this.categoriesService.create(payload)
     }
 
+    @Casl([Action.List, Subject.Category])
     @Get()
     findAll() {
         return this.categoriesService.findAll()
     }
 
+    @Casl([Action.Read, Subject.Category])
     @Get(':id')
     findOne(@Param('id', ParseUUIDPipe) id: string) {
         return this.categoriesService.findOne(id)
     }
 
     @Roles(RoleEnum.Admin, RoleEnum.Moderator)
+    @Casl([Action.Update, Subject.Category])
     @Patch(':id')
     update(
         @Param('id', ParseUUIDPipe) id: string,
@@ -57,6 +65,7 @@ export class CategoriesController {
     }
 
     @Roles(RoleEnum.Admin, RoleEnum.Moderator)
+    @Casl([Action.Delete, Subject.Category])
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(@Param('id', ParseUUIDPipe) id: string) {

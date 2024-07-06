@@ -5,6 +5,7 @@ import { QuizzesController } from './quizzes.controller'
 import { QuizzesService } from './quizzes.service'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
 import { RoleEnum } from '../users/entities/role.enum'
+import { ServerCaslService } from '../casl/casl.service'
 
 describe('QuizzesController', () => {
     let quizzesController: QuizzesController
@@ -19,7 +20,8 @@ describe('QuizzesController', () => {
                 {
                     provide: QuizzesService,
                     useValue: { remove: jest.fn() }
-                }
+                },
+                ServerCaslService
             ]
         }).compile()
 
