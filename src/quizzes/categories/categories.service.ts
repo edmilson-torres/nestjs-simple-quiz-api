@@ -8,8 +8,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, TypeORMError } from 'typeorm'
 
-import { CategoryEntity } from './entities/category.entity'
-import { CategoryDto } from './dto/category.dto'
+import { CategoryEntity } from './category.entity'
+import { CategoryDto } from './category.dto'
 
 @Injectable()
 export class CategoriesService {

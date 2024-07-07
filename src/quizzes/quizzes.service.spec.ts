@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { QuizzesService } from './quizzes.service'
-import { QuizEntity } from './entities/quiz.entity'
+import { QuizEntity } from './quiz.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'

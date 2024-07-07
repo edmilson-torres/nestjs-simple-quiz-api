@@ -7,10 +7,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, TypeORMError } from 'typeorm'
 
-import { AnswerEntity } from './entities/answer.entity'
-import { AnswerDto } from './dto/answer.dto'
-import { PassportUserDto } from '../auth/dto/passport-user.dto'
-import { UserEntity } from '../users/entities/user.entity'
+import { AnswerEntity } from './answer.entity'
+import { AnswerDto } from './answer.dto'
+import { PassportUserDto } from '../../auth/dto/passport-user.dto'
+import { UserEntity } from '../../users/entities/user.entity'
 
 @Injectable()
 export class AnswerService {

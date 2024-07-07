@@ -12,9 +12,9 @@ import {
     Validate
 } from 'class-validator'
 
-import { AnswerDto } from './answer.dto'
-import { UuidDto } from './uuid.dto'
+import { AnswerDto } from '../answers/answer.dto'
 import { AnswersValidation } from '../helpers/answers.validation'
+import { UuidDto } from '../dto/uuid.dto'
 
 export class CreateQuestionDto {
     @ApiProperty()
@@ -32,6 +32,19 @@ export class CreateQuestionDto {
     @Validate(AnswersValidation)
     @IsOptional()
     answers?: AnswerDto[]
+
+    @ApiProperty({ type: UuidDto })
+    @Type(() => UuidDto)
+    @ValidateNested()
+    quiz: UuidDto
+}
+
+export class UpdateQuestionDto {
+    @ApiProperty()
+    @IsString()
+    @MinLength(10)
+    @MaxLength(255)
+    text: string
 
     @ApiProperty({ type: UuidDto })
     @Type(() => UuidDto)

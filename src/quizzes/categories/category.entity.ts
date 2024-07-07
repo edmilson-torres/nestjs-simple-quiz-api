@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm'
-import { QuizEntity } from './quiz.entity'
+import { QuizEntity } from '../quiz.entity'
 
 @Entity({ name: 'category' })
 export class CategoryEntity extends BaseEntity {

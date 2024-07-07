@@ -4,36 +4,30 @@ import {
     CreateDateColumn,
     Entity,
     ManyToOne,
-    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm'
-
-import { QuizEntity } from './quiz.entity'
-import { AnswerEntity } from './answer.entity'
+import { QuestionEntity } from '../questions/question.entity'
 import { UserEntity } from '../../users/entities/user.entity'
 
-@Entity({ name: 'question' })
-export class QuestionEntity extends BaseEntity {
+@Entity({ name: 'answer' })
+export class AnswerEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
     @Column()
     text: string
 
-    @ManyToOne(() => QuizEntity, {
+    @Column({ default: false })
+    isCorrect?: boolean
+
+    @ManyToOne(() => QuestionEntity, {
         onDelete: 'CASCADE'
     })
-    quiz: QuizEntity
+    question: QuestionEntity
 
     @ManyToOne(() => UserEntity)
     user: UserEntity
-
-    @OneToMany(() => AnswerEntity, (answer) => answer.question, {
-        eager: true,
-        cascade: true
-    })
-    answers: AnswerEntity[]
 
     @CreateDateColumn()
     createdAt: Date
@@ -41,7 +35,7 @@ export class QuestionEntity extends BaseEntity {
     @UpdateDateColumn()
     updatedAt: Date
 
-    constructor(partial: Partial<QuestionEntity>) {
+    constructor(partial: Partial<AnswerEntity>) {
         super()
         Object.assign(this, partial)
     }

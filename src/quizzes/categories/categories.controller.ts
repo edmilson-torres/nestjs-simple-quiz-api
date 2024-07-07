@@ -16,15 +16,15 @@ import {
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { CategoriesService } from './categories.service'
-import { CategoryDto } from './dto/category.dto'
-import { AuthGuardJwt } from '../auth/guards/auth-jwt.guard'
-import { RoleGuard } from '../auth/guards/roles.guard'
-import { Roles } from '../auth/decorators/role.decorator'
-import { RoleEnum } from '../users/entities/role.enum'
-import { CaslGuard } from '../casl/casl.guard'
-import { Casl } from '../casl/casl.decorator'
-import { Action } from '../casl/action.enum'
-import { Subject } from '../casl/subject.enum'
+import { AuthGuardJwt } from '../../auth/guards/auth-jwt.guard'
+import { RoleGuard } from '../../auth/guards/roles.guard'
+import { CaslGuard } from '../../casl/casl.guard'
+import { RoleEnum } from '../../users/entities/role.enum'
+import { Subject } from '../../casl/subject.enum'
+import { Action } from '../../casl/action.enum'
+import { Roles } from '../../auth/decorators/role.decorator'
+import { Casl } from '../../casl/casl.decorator'
+import { CategoryDto } from './category.dto'
 
 @ApiTags('Categories')
 @ApiBearerAuth()

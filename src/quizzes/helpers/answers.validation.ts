@@ -2,7 +2,7 @@ import {
     ValidatorConstraint,
     ValidatorConstraintInterface
 } from 'class-validator'
-import { AnswerDto } from '../dto/answer.dto'
+import { AnswerDto } from '../answers/answer.dto'
 
 @ValidatorConstraint({ name: 'answersValidation', async: false })
 export class AnswersValidation implements ValidatorConstraintInterface {

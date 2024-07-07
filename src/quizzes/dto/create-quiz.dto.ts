@@ -12,8 +12,8 @@ import {
     MaxLength
 } from 'class-validator'
 
-import { CategoryDto } from './category.dto'
-import { CreateQuestionDto } from './create-question.dto'
+import { CategoryDto } from '../categories/category.dto'
+import { CreateQuestionDto } from '../questions/question.dto'
 
 export class CreateQuizDto {
     @ApiProperty()

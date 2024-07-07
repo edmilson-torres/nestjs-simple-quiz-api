@@ -10,10 +10,10 @@ import {
     BaseEntity,
     OneToMany
 } from 'typeorm'
-import { QuizEntity } from '../../quizzes/entities/quiz.entity'
+import { QuizEntity } from '../../quizzes/quiz.entity'
 import { RoleEnum } from './role.enum'
-import { QuestionEntity } from '../../quizzes/entities/question.entity'
-import { AnswerEntity } from '../../quizzes/entities/answer.entity'
+import { AnswerEntity } from '../../quizzes/answers/answer.entity'
+import { QuestionEntity } from '../../quizzes/questions/question.entity'
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {

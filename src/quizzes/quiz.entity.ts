@@ -9,9 +9,9 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm'
-import { UserEntity } from '../../users/entities/user.entity'
-import { CategoryEntity } from './category.entity'
-import { QuestionEntity } from './question.entity'
+import { UserEntity } from '../users/entities/user.entity'
+import { CategoryEntity } from './categories/category.entity'
+import { QuestionEntity } from './questions/question.entity'
 
 @Entity({ name: 'quiz' })
 export class QuizEntity extends BaseEntity {
