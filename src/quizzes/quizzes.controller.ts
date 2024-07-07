@@ -42,6 +42,7 @@ export class QuizzesController {
 
     @Casl([Action.Create, Subject.Quiz])
     @Post()
+    @SerializeOptions({ groups: ['all'] })
     @HttpCode(HttpStatus.CREATED)
     create(@CurrentUser() user, @Body() createQuizDto: CreateQuizDto) {
         return this.quizzesService.create(user.id, createQuizDto)
