@@ -64,20 +64,26 @@ export class QuestionsService {
     }
 
     async update(id: string, payload: UpdateQuestionDto) {
-        const questionChecked = await this.questionsRepository.exists({
+        const question = await this.questionsRepository.findOne({
             where: { id }
         })
 
-        if (!questionChecked) {
+        if (!question) {
             throw new NotFoundException()
         }
 
-        const question = this.questionsRepository.create({
+        const questionUpdate = this.questionsRepository.create({
             id,
             text: payload.text
         })
 
-        return this.questionsRepository.save(question)
+        try {
+            await this.questionsRepository.update(id, questionUpdate)
+
+            return this.questionsRepository.merge(question, questionUpdate)
+        } catch (error) {
+            throw new BadRequestException(error.message)
+        }
     }
 
     async remove(id: string) {
