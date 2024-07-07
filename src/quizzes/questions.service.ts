@@ -12,16 +12,25 @@ import { CreateQuestionDto } from './dto/create-question.dto'
 import { UpdateQuestionDto } from './dto/update-question.dto'
 import { PassportUserDto } from '../auth/dto/passport-user.dto'
 import { UserEntity } from '../users/entities/user.entity'
+import { AnswerEntity } from './entities/answer.entity'
 
 @Injectable()
 export class QuestionsService {
     @InjectRepository(QuestionEntity)
     private readonly questionsRepository: Repository<QuestionEntity>
 
-    async create(payload: CreateQuestionDto, user: PassportUserDto) {
-        const question = this.questionsRepository.create(payload)
+    async create(payload: CreateQuestionDto, userDto: PassportUserDto) {
+        const user = new UserEntity({ id: userDto.id })
 
-        question.user = new UserEntity({ id: user.id })
+        const answers: AnswerEntity[] = []
+        payload.answers.forEach((answer: AnswerEntity) => {
+            answer.user = user
+            answers.push(new AnswerEntity(answer))
+        })
+
+        const question = this.questionsRepository.create(payload)
+        question.user = user
+        question.answers = answers
 
         try {
             const newQuestion = await this.questionsRepository.save(question)
