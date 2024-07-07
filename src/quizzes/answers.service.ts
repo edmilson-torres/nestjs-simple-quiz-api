@@ -9,14 +9,17 @@ import { Repository, TypeORMError } from 'typeorm'
 
 import { AnswerEntity } from './entities/answer.entity'
 import { AnswerDto } from './dto/answer.dto'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { UserEntity } from '../users/entities/user.entity'
 
 @Injectable()
 export class AnswerService {
     @InjectRepository(AnswerEntity)
     private readonly answersRepository: Repository<AnswerEntity>
 
-    async create(payload: AnswerDto) {
+    async create(payload: AnswerDto, user: PassportUserDto) {
         const answer = this.answersRepository.create(payload)
+        answer.user = new UserEntity({ id: user.id })
 
         try {
             const newAnswer = await this.answersRepository.save(answer)
@@ -43,7 +46,7 @@ export class AnswerService {
         return this.answersRepository.find()
     }
 
-    async update(id: string, payload: AnswerDto) {
+    async update(id: string, payload: AnswerDto, user: PassportUserDto) {
         const answerChecked = await this.answersRepository.exists({
             where: { id }
         })
@@ -54,7 +57,9 @@ export class AnswerService {
 
         const answer = this.answersRepository.create(payload)
 
-        return this.answersRepository.update({ id }, answer)
+        answer.user = new UserEntity({ id: user.id })
+
+        return this.answersRepository.save({ id, ...answer })
     }
 
     async remove(id: string) {

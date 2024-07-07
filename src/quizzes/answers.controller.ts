@@ -11,7 +11,8 @@ import {
     Param,
     ParseUUIDPipe,
     Patch,
-    Post
+    Post,
+    SerializeOptions
 } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
@@ -25,6 +26,8 @@ import { CaslGuard } from '../casl/casl.guard'
 import { Casl } from '../casl/casl.decorator'
 import { Action } from '../casl/action.enum'
 import { Subject } from '../casl/subject.enum'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { CurrentUser } from '../users/decorators/user.decorator'
 
 @ApiTags('Answers')
 @ApiBearerAuth()
@@ -35,10 +38,11 @@ export class AnswerController {
     constructor(private readonly answerService: AnswerService) {}
 
     @Casl([Action.Create, Subject.Answer])
+    @SerializeOptions({ groups: ['all'] })
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() payload: AnswerDto) {
-        return this.answerService.create(payload)
+    create(@CurrentUser() user: PassportUserDto, @Body() payload: AnswerDto) {
+        return this.answerService.create(payload, user)
     }
 
     @Casl([Action.List, Subject.Answer])
@@ -55,9 +59,14 @@ export class AnswerController {
     }
 
     @Casl([Action.Update, Subject.Answer])
+    @SerializeOptions({ groups: ['all'] })
     @Patch(':id')
-    update(@Param('id', ParseUUIDPipe) id: string, @Body() payload: AnswerDto) {
-        return this.answerService.update(id, payload)
+    update(
+        @CurrentUser() user: PassportUserDto,
+        @Param('id', ParseUUIDPipe) id: string,
+        @Body() payload: AnswerDto
+    ) {
+        return this.answerService.update(id, payload, user)
     }
 
     @Casl([Action.Delete, Subject.Answer])
