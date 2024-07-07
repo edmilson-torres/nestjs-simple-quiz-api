@@ -11,7 +11,8 @@ import {
     Param,
     ParseUUIDPipe,
     Patch,
-    Post
+    Post,
+    SerializeOptions
 } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
@@ -26,6 +27,8 @@ import { CaslGuard } from '../casl/casl.guard'
 import { Casl } from '../casl/casl.decorator'
 import { Action } from '../casl/action.enum'
 import { Subject } from '../casl/subject.enum'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { CurrentUser } from '../users/decorators/user.decorator'
 
 @ApiTags('Questions')
 @ApiBearerAuth()
@@ -35,14 +38,18 @@ import { Subject } from '../casl/subject.enum'
 export class QuestionsController {
     constructor(private readonly questionService: QuestionsService) {}
 
-    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Casl([Action.Create, Subject.Question])
     @Post()
+    @SerializeOptions({ groups: ['all'] })
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() payload: CreateQuestionDto) {
-        return this.questionService.create(payload)
+    create(
+        @CurrentUser() user: PassportUserDto,
+        @Body() payload: CreateQuestionDto
+    ) {
+        return this.questionService.create(payload, user)
     }
 
+    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Casl([Action.List, Subject.Question])
     @Get()
     findAll() {
@@ -55,8 +62,8 @@ export class QuestionsController {
         return this.questionService.findOne(id)
     }
 
-    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Casl([Action.Update, Subject.Question])
+    @SerializeOptions({ groups: ['all'] })
     @Patch(':id')
     update(
         @Param('id', ParseUUIDPipe) id: string,
@@ -65,7 +72,6 @@ export class QuestionsController {
         return this.questionService.update(id, payload)
     }
 
-    @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Casl([Action.Delete, Subject.Question])
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)

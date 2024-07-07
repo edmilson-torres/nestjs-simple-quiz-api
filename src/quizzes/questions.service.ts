@@ -10,21 +10,29 @@ import { Repository, TypeORMError } from 'typeorm'
 import { QuestionEntity } from './entities/question.entity'
 import { CreateQuestionDto } from './dto/create-question.dto'
 import { UpdateQuestionDto } from './dto/update-question.dto'
+import { PassportUserDto } from '../auth/dto/passport-user.dto'
+import { UserEntity } from '../users/entities/user.entity'
 
 @Injectable()
 export class QuestionsService {
     @InjectRepository(QuestionEntity)
     private readonly questionsRepository: Repository<QuestionEntity>
 
-    async create(payload: CreateQuestionDto) {
+    async create(payload: CreateQuestionDto, user: PassportUserDto) {
         const question = this.questionsRepository.create(payload)
+
+        question.user = new UserEntity({ id: user.id })
 
         try {
             const newQuestion = await this.questionsRepository.save(question)
 
             return new QuestionEntity(newQuestion)
         } catch (error) {
-            if (error instanceof TypeORMError) throw new ConflictException()
+            if (error instanceof TypeORMError) {
+                if (error.message.includes('FK_'))
+                    throw new BadRequestException('quiz not exist')
+                throw new ConflictException()
+            }
 
             throw new BadRequestException(error.message)
         }
@@ -55,9 +63,9 @@ export class QuestionsService {
             throw new NotFoundException()
         }
 
-        const question = this.questionsRepository.create(payload)
+        const question = this.questionsRepository.create({ id, ...payload })
 
-        return this.questionsRepository.update({ id }, question)
+        return this.questionsRepository.save(question)
     }
 
     async remove(id: string) {
