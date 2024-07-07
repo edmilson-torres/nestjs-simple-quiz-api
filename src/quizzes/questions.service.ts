@@ -72,7 +72,10 @@ export class QuestionsService {
             throw new NotFoundException()
         }
 
-        const question = this.questionsRepository.create({ id, ...payload })
+        const question = this.questionsRepository.create({
+            id,
+            text: payload.text
+        })
 
         return this.questionsRepository.save(question)
     }
