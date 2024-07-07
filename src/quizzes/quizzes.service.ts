@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     ConflictException,
     Injectable,
     NotFoundException,
@@ -97,7 +98,11 @@ export class QuizzesService {
         try {
             await this.quizzesRepository.update({ id }, payload)
         } catch (error) {
-            if (error instanceof TypeORMError) throw new ConflictException()
+            if (error instanceof TypeORMError) {
+                if (error.message.includes('FK_'))
+                    throw new BadRequestException('category not exist')
+                throw new ConflictException()
+            }
 
             throw new UnprocessableEntityException(error.message)
         }
