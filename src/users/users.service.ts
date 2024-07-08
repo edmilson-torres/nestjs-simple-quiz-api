@@ -56,8 +56,9 @@ export class UsersService {
 
     async findOne(id: string, reqUser: Partial<UserEntity>) {
         const admin = isAdmin(reqUser.role)
+        const moderator = reqUser.role === RoleEnum.Moderator
 
-        if (admin || reqUser.id === id) {
+        if (admin || moderator || reqUser.id === id) {
             const user = await this.usersRepository.findOne({
                 where: { id }
             })
