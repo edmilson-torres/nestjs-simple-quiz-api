@@ -13,7 +13,7 @@ import {
 } from 'class-validator'
 
 import { AnswerDto } from '../answers/answer.dto'
-import { AnswersValidation } from '../helpers/answers.validation'
+import { AnswersValidation } from '../answers/answers.validation'
 import { UuidDto } from '../dto/uuid.dto'
 
 export class CreateQuestionDto {
