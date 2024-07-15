@@ -1,6 +1,7 @@
 import {
     BadRequestException,
     ConflictException,
+    ForbiddenException,
     Injectable,
     NotFoundException
 } from '@nestjs/common'
@@ -9,27 +10,34 @@ import { Repository, TypeORMError } from 'typeorm'
 
 import { PassportUserDto } from '../../auth/dto/passport-user.dto'
 import { UserEntity } from '../../users/entities/user.entity'
-import { AnswerEntity } from '../answers/answer.entity'
 import { QuestionEntity } from './question.entity'
 import { CreateQuestionDto, UpdateQuestionDto } from './question.dto'
+import { QuizEntity } from '../quiz.entity'
 
 @Injectable()
 export class QuestionsService {
     @InjectRepository(QuestionEntity)
     private readonly questionsRepository: Repository<QuestionEntity>
 
-    async create(payload: CreateQuestionDto, userDto: PassportUserDto) {
-        const user = new UserEntity({ id: userDto.id })
+    @InjectRepository(QuizEntity)
+    private readonly quizzesRepository: Repository<QuizEntity>
 
-        const answers: AnswerEntity[] = []
-        payload.answers.forEach((answer: AnswerEntity) => {
-            answer.user = user
-            answers.push(new AnswerEntity(answer))
+    async create(payload: CreateQuestionDto, userDto: PassportUserDto) {
+        const quiz = await this.quizzesRepository.findOne({
+            where: { id: payload.quiz }
         })
 
-        const question = this.questionsRepository.create(payload)
+        if (!quiz) throw new NotFoundException('Quiz not found')
+
+        if (quiz.user.id !== userDto.id) throw new ForbiddenException()
+
+        const user = new UserEntity({ id: userDto.id })
+
+        const question = this.questionsRepository.create({
+            ...payload,
+            quiz
+        })
         question.user = user
-        question.answers = answers
 
         try {
             const newQuestion = await this.questionsRepository.save(question)
@@ -48,28 +56,38 @@ export class QuestionsService {
 
     async findOne(id: string) {
         const foundedQuestion = await this.questionsRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: ['quiz'],
+            loadEagerRelations: false
         })
 
         if (!foundedQuestion) {
             throw new NotFoundException()
         }
 
-        return new QuestionEntity(foundedQuestion)
+        return foundedQuestion
     }
 
     findAll() {
         return this.questionsRepository.find()
     }
 
-    async update(id: string, payload: UpdateQuestionDto) {
+    async update(
+        id: string,
+        payload: UpdateQuestionDto,
+        userDto: PassportUserDto
+    ) {
         const question = await this.questionsRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: ['user'],
+            loadEagerRelations: false
         })
 
         if (!question) {
             throw new NotFoundException()
         }
+
+        if (question.user.id !== userDto.id) throw new ForbiddenException()
 
         const questionUpdate = this.questionsRepository.create({
             id,
@@ -85,14 +103,18 @@ export class QuestionsService {
         }
     }
 
-    async remove(id: string) {
-        const questionChecked = await this.questionsRepository.exists({
-            where: { id }
+    async remove(id: string, userDto: PassportUserDto) {
+        const question = await this.questionsRepository.findOne({
+            where: { id },
+            relations: ['user'],
+            loadEagerRelations: false
         })
 
-        if (!questionChecked) {
+        if (!question) {
             throw new NotFoundException()
         }
+
+        if (question.user.id !== userDto.id) throw new ForbiddenException()
 
         try {
             await this.questionsRepository.delete(id)

@@ -67,15 +67,19 @@ export class QuestionsController {
     @Patch(':id')
     update(
         @Param('id', ParseUUIDPipe) id: string,
-        @Body() payload: UpdateQuestionDto
+        @Body() payload: UpdateQuestionDto,
+        @CurrentUser() user: PassportUserDto
     ) {
-        return this.questionService.update(id, payload)
+        return this.questionService.update(id, payload, user)
     }
 
     @Casl([Action.Delete, Subject.Question])
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Param('id', ParseUUIDPipe) id: string) {
-        return this.questionService.remove(id)
+    remove(
+        @Param('id', ParseUUIDPipe) id: string,
+        @CurrentUser() user: PassportUserDto
+    ) {
+        return this.questionService.remove(id, user)
     }
 }
