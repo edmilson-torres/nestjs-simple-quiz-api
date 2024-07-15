@@ -13,7 +13,7 @@ import {
 } from 'class-validator'
 
 import { CategoryDto } from '../categories/category.dto'
-import { CreateQuestionDto } from '../questions/question.dto'
+import { CreateQuizQuestionDto } from './create-quiz-question.dto'
 
 export class CreateQuizDto {
     @ApiProperty()
@@ -39,11 +39,11 @@ export class CreateQuizDto {
     @IsBoolean()
     isActive: boolean
 
-    @ApiProperty({ type: [CreateQuestionDto], maxItems: 20, minItems: 1 })
+    @ApiProperty({ type: [CreateQuizQuestionDto], maxItems: 20, minItems: 1 })
     @IsArray()
     @ArrayMinSize(1)
     @ArrayMaxSize(20)
     @ValidateNested({ each: true })
-    @Type(() => CreateQuestionDto)
-    questions: CreateQuestionDto[]
+    @Type(() => CreateQuizQuestionDto)
+    questions: CreateQuizQuestionDto[]
 }

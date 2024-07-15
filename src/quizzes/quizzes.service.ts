@@ -25,12 +25,6 @@ export class QuizzesService {
 
     async create(userId: string, payload: CreateQuizDto) {
         const user = new UserEntity({ id: userId })
-        const quiz = this.quizzesRepository.create(payload)
-
-        quiz.user = user
-        quiz.text = payload.text
-        quiz.description = payload.description
-        quiz.category = new CategoryEntity({ name: payload.category.name })
 
         const questions: QuestionEntity[] = []
         payload.questions.forEach((question: QuestionEntity) => {
@@ -44,6 +38,13 @@ export class QuizzesService {
             questions.push(new QuestionEntity({ ...question, answers }))
         })
 
+        const quiz = this.quizzesRepository.create()
+        quiz.user = user
+        quiz.text = payload.text
+        quiz.description = payload.description
+        quiz.category = new CategoryEntity({
+            name: payload.category.name
+        })
         quiz.questions = questions
 
         const response = await this.quizzesRepository.save(quiz)
@@ -81,7 +82,7 @@ export class QuizzesService {
 
         quiz.user = new UserEntity(quiz.user)
 
-        return new QuizEntity(quiz)
+        return quiz
     }
 
     async update(id: string, payload: UpdateQuizDto, user: PassportUserDto) {
