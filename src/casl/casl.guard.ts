@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core'
 
 import { ServerCaslService } from './casl.service'
 import { Casl } from './casl.decorator'
+import { IS_PUBLIC_KEY } from '../auth/decorators/public.decorator'
 
 @Injectable()
 export class CaslGuard implements CanActivate {
@@ -12,6 +13,15 @@ export class CaslGuard implements CanActivate {
     ) {}
 
     canActivate(context: ExecutionContext) {
+        const isPublic = this.reflector.getAllAndOverride<boolean>(
+            IS_PUBLIC_KEY,
+            [context.getHandler(), context.getClass()]
+        )
+
+        if (isPublic) {
+            return true
+        }
+
         const [action, expectedSubject] = this.reflector.getAllAndOverride(
             Casl,
             [context.getHandler(), context.getClass()]
