@@ -31,15 +31,16 @@ import { CaslGuard } from '../casl/casl.guard'
 import { Casl } from '../casl/casl.decorator'
 import { Action } from '../casl/action.enum'
 import { Subject } from '../casl/subject.enum'
+import { Public } from '../auth/decorators/public.decorator'
 
 @ApiTags('Quizzes')
-@ApiBearerAuth()
 @UseGuards(AuthGuardJwt, RoleGuard, CaslGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('quizzes')
 export class QuizzesController {
     constructor(private readonly quizzesService: QuizzesService) {}
 
+    @ApiBearerAuth()
     @Casl([Action.Create, Subject.Quiz])
     @Post()
     @SerializeOptions({ groups: ['all'] })
@@ -48,20 +49,21 @@ export class QuizzesController {
         return this.quizzesService.create(user.id, createQuizDto)
     }
 
-    @Casl([Action.List, Subject.Quiz])
+    @Public()
     @SerializeOptions({ groups: ['all'] })
     @Get()
     findAll() {
         return this.quizzesService.findAll()
     }
 
-    @Casl([Action.Read, Subject.Quiz])
+    @Public()
     @SerializeOptions({ groups: ['all'] })
     @Get(':id')
     findOne(@Param('id', ParseUUIDPipe) id: string) {
         return this.quizzesService.findOne(id)
     }
 
+    @ApiBearerAuth()
     @Casl([Action.Update, Subject.Quiz])
     @Patch(':id')
     update(
@@ -72,6 +74,7 @@ export class QuizzesController {
         return this.quizzesService.update(id, updateQuizDto, user)
     }
 
+    @ApiBearerAuth()
     @Casl([Action.Delete, Subject.Quiz])
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
@@ -82,6 +85,7 @@ export class QuizzesController {
         return this.quizzesService.remove(id, user)
     }
 
+    @ApiBearerAuth()
     @Roles(RoleEnum.Admin, RoleEnum.Moderator)
     @Casl([Action.Update, Subject.Quiz])
     @Patch('/isactive/:id')
