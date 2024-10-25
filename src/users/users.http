@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:3000
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "firstName": "user",
+  "lastName": "user",
+  "email": "user@mail.com",
+  "password": "Abc.12345678"
+}
+
+###
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "firstName": "moderator",
+  "lastName": "moderator",
+  "email": "moderator@mail.com",
+  "password": "Abc.12345678"
+}
+
+###
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "firstName": "admin",
+  "lastName": "admin",
+  "email": "admin@mail.com",
+  "password": "Abc.12345678"
+}
+
+###
+
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjY2YzODFhMy00MzEzLTQ3MzAtYjkxOC01ZmEwMjc1ZGQ5OTEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjk4NjIwMDYsImV4cCI6MTczMDI5NDAwNn0.q8mXA0U8X8JrOScIoIZtCSFkVrYqNJ7h1TxTp0X-RoE
+
+###
+
+GET {{baseUrl}}/users
+Authorization: Bearer {{authToken}}
+
+###
+
+GET {{baseUrl}}/users/60a50a87-2de5-44fd-ba9c-577f8c02cc4c
+Authorization: Bearer {{authToken}}
+
+###
+
+DELETE {{baseUrl}}/users/60a50a87-2de5-44fd-ba9c-577f8c02cc4c
+Authorization: Bearer {{authToken}}
+
+###
+
+PATCH {{baseUrl}}/users/60a50a87-2de5-44fd-ba9c-577f8c02cc4c
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "firstName": "mudança",
+  "lastName": "ultimo"
+}

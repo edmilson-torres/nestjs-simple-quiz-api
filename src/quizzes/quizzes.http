@@ -1,0 +1,593 @@
+@baseUrl = http://localhost:3000
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjY2YzODFhMy00MzEzLTQ3MzAtYjkxOC01ZmEwMjc1ZGQ5OTEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjk4NjIwMDYsImV4cCI6MTczMDI5NDAwNn0.q8mXA0U8X8JrOScIoIZtCSFkVrYqNJ7h1TxTp0X-RoE
+
+###
+
+POST http://localhost:3000/quizzes
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+ {
+    "text": "Capitais do Norte",
+    "description": "Capitais da região Norte do Brasil ",
+    "category": {"name": "geografia"},
+    "isActive": true,
+    "questions": [
+      {
+        "text": "Qual é o nome da capital de Pará?",
+        "answers": [
+          {
+            "text": "Belém",
+            "isCorrect": true
+          },
+          {
+            "text": "Belo Horizonte",
+            "isCorrect": false
+          },
+          {
+            "text": "Rio Branco",
+            "isCorrect": false
+          },
+          {
+            "text": "Boa Vista",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital de Roraima?",
+        "answers": [
+          {
+            "text": "Boa Vista",
+            "isCorrect": true
+          },
+          {
+            "text": "Brasília",
+            "isCorrect": false
+          },
+          {
+            "text": "Belém",
+            "isCorrect": false
+          },
+          {
+            "text": "Rio Branco",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital do Amapá?",
+        "answers": [
+          {
+            "text": "Macapá",
+            "isCorrect": true
+          },
+          {
+            "text": "Maceió",
+            "isCorrect": false
+          },
+          {
+            "text": "Boa Vista",
+            "isCorrect": false
+          },
+          {
+            "text": "Manaus",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital do Amazonas?",
+        "answers": [
+          {
+            "text": "Manaus",
+            "isCorrect": true
+          },
+          {
+            "text": "Aracaju",
+            "isCorrect": false
+          },
+          {
+            "text": "Macapá",
+            "isCorrect": false
+          },
+          {
+            "text": "Belém",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital de Tocantins?",
+        "answers": [
+          {
+            "text": "Palmas",
+            "isCorrect": true
+          },
+          {
+            "text": "Porto Alegre",
+            "isCorrect": false
+          },
+          {
+            "text": "Manaus",
+            "isCorrect": false
+          },
+          {
+            "text": "Porto Velho",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital de Rondônia?",
+        "answers": [
+          {
+            "text": "Porto Velho",
+            "isCorrect": true
+          },
+          {
+            "text": "Campo Grande",
+            "isCorrect": false
+          },
+          {
+            "text": "Palmas",
+            "isCorrect": false
+          },
+          {
+            "text": "Rio Branco",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital do Acre?",
+        "answers": [
+          {
+            "text": "Rio Branco",
+            "isCorrect": true
+          },
+          {
+            "text": "Rio de Janeiro",
+            "isCorrect": false
+          },
+          {
+            "text": "Porto Velho",
+            "isCorrect": false
+          },
+          {
+            "text": "Palmas",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  }
+
+###
+
+POST http://localhost:3000/quizzes
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "text": "Capitais do Nordeste",
+    "description": "Capitais da região Nordeste do Brasil ",
+    "category": {"name": "geografia"},
+    "isActive": true,
+    "questions": [
+      {
+        "text": "Qual é o nome da capital de Maranhão?",
+        "answers": [
+          {
+            "text": "São Luís",
+            "isCorrect": true
+          },
+          {
+            "text": "Belo Horizonte",
+            "isCorrect": false
+          },
+          {
+            "text": "Maceió",
+            "isCorrect": false
+          },
+          {
+            "text": "Teresina",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital do Piauí?",
+        "answers": [
+          {
+            "text": "Teresina",
+            "isCorrect": true
+          },
+          {
+            "text": "São Luís",
+            "isCorrect": false
+          },
+          {
+            "text": "Belém",
+            "isCorrect": false
+          },
+          {
+            "text": "Rio Branco",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital do Ceará?",
+        "answers": [
+          {
+            "text": "Fortaleza",
+            "isCorrect": true
+          },
+          {
+            "text": "Maceió",
+            "isCorrect": false
+          },
+          {
+            "text": "Boa Vista",
+            "isCorrect": false
+          },
+          {
+            "text": "Manaus",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital do Rio Grande do Norte?",
+        "answers": [
+          {
+            "text": "Natal",
+            "isCorrect": true
+          },
+          {
+            "text": "João Pessoa",
+            "isCorrect": false
+          },
+          {
+            "text": "Natal",
+            "isCorrect": false
+          },
+          {
+            "text": "Belém",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital da Paraíba?",
+        "answers": [
+          {
+            "text": "João Pessoa",
+            "isCorrect": true
+          },
+          {
+            "text": "Recife",
+            "isCorrect": false
+          },
+          {
+            "text": "Aracaju",
+            "isCorrect": false
+          },
+          {
+            "text": "Porto Velho",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital de Pernambuco?",
+        "answers": [
+          {
+            "text": "Recife",
+            "isCorrect": true
+          },
+          {
+            "text": "Campo Grande",
+            "isCorrect": false
+          },
+          {
+            "text": "Maceió",
+            "isCorrect": false
+          },
+          {
+            "text": "Natal",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital de Alagoas?",
+        "answers": [
+          {
+            "text": "Maceió",
+            "isCorrect": true
+          },
+          {
+            "text": "Rio de Janeiro",
+            "isCorrect": false
+          },
+          {
+            "text": "Recife",
+            "isCorrect": false
+          },
+          {
+            "text": "Aracaju",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital do Sergipe?",
+        "answers": [
+          {
+            "text": "Aracaju",
+            "isCorrect": true
+          },
+          {
+            "text": "João Pessoa",
+            "isCorrect": false
+          },
+          {
+            "text": "Natal",
+            "isCorrect": false
+          },
+          {
+            "text": "Palmas",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Qual é o nome da capital da Bahia?",
+        "answers": [
+          {
+            "text": "Salvador",
+            "isCorrect": true
+          },
+          {
+            "text": "Fortaleza",
+            "isCorrect": false
+          },
+          {
+            "text": "Porto Velho",
+            "isCorrect": false
+          },
+          {
+            "text": "Teresina",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  }
+
+###
+
+POST http://localhost:3000/quizzes
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "text": "Comandos Git",
+    "description": "Principais comandos do Git",
+    "category": {"name": "Versionamento"},
+    "isActive": true,
+    "questions": [
+      {
+        "text": "Para criar um novo projeto",
+        "answers": [
+          {
+            "text": "git init",
+            "isCorrect": true
+          },
+          {
+            "text": "git config",
+            "isCorrect": false
+          },
+          {
+            "text": "git clone",
+            "isCorrect": false
+          },
+          {
+            "text": "git branch",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Para copiar repositório remoto",
+        "answers": [
+          {
+            "text": "git clone",
+            "isCorrect": true
+          },
+          {
+            "text": "git checkout",
+            "isCorrect": false
+          },
+          {
+            "text": "git copy",
+            "isCorrect": false
+          },
+          {
+            "text": "git remote",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Mostra informações atuais do seu repositório",
+        "answers": [
+          {
+            "text": "git status",
+            "isCorrect": true
+          },
+          {
+            "text": "git info",
+            "isCorrect": false
+          },
+          {
+            "text": "git checkout",
+            "isCorrect": false
+          },
+          {
+            "text": "git stash",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Adiciona arquivos na área de 'stage'",
+        "answers": [
+          {
+            "text": "git add",
+            "isCorrect": true
+          },
+          {
+            "text": "git push",
+            "isCorrect": false
+          },
+          {
+            "text": "git commit",
+            "isCorrect": false
+          },
+          {
+            "text": "git branch",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Registra alterações no repositório",
+        "answers": [
+          {
+            "text": "git commit",
+            "isCorrect": true
+          },
+          {
+            "text": "git add",
+            "isCorrect": false
+          },
+          {
+            "text": "git push",
+            "isCorrect": false
+          },
+          {
+            "text": "git pull",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Vincular o repositório local com um repositório remoto",
+        "answers": [
+          {
+            "text": "git remote",
+            "isCorrect": true
+          },
+          {
+            "text": "git clone",
+            "isCorrect": false
+          },
+          {
+            "text": "git pull",
+            "isCorrect": false
+          },
+          {
+            "text": "git branch",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Obtém atualizações do repositório remoto",
+        "answers": [
+          {
+            "text": "git pull",
+            "isCorrect": true
+          },
+          {
+            "text": "git push",
+            "isCorrect": false
+          },
+          {
+            "text": "git clone",
+            "isCorrect": false
+          },
+          {
+            "text": "git commit",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Envia atualizações para repositório remoto",
+        "answers": [
+          {
+            "text": "git push",
+            "isCorrect": true
+          },
+          {
+            "text": "git pull",
+            "isCorrect": false
+          },
+          {
+            "text": "git remote",
+            "isCorrect": false
+          },
+          {
+            "text": "git send",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Exibe os registros log do commit",
+        "answers": [
+          {
+            "text": "git log",
+            "isCorrect": true
+          },
+          {
+            "text": "git status",
+            "isCorrect": false
+          },
+          {
+            "text": "git list",
+            "isCorrect": false
+          },
+          {
+            "text": "git config",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Obtém ou define as configurações do repositório",
+        "answers": [
+          {
+            "text": "git config",
+            "isCorrect": true
+          },
+          {
+            "text": "git name",
+            "isCorrect": false
+          },
+          {
+            "text": "git email",
+            "isCorrect": false
+          },
+          {
+            "text": "git set",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  }

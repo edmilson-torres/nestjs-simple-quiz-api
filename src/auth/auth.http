@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3000
+
+###
+# Login
+# @name tokenAPI
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@mail.com",
+  "password": "Abc.12345678"
+}
+
+###
+
+@authToken = {{tokenAPI.response.body.access_token}}
+
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{authToken}}
+
+###
+
+@authRefreshToken = {{tokenAPI.response.body.refresh_token}}
+
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "{{authRefreshToken}}"
+}
