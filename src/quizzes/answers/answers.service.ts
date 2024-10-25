@@ -8,23 +8,25 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, TypeORMError } from 'typeorm'
 
 import { AnswerEntity } from './answer.entity'
-import { AnswerDto } from './answer.dto'
+import { CreateAnswerDto } from './answer.dto'
 import { PassportUserDto } from '../../auth/dto/passport-user.dto'
 import { UserEntity } from '../../users/entities/user.entity'
+import { QuestionEntity } from '../questions/question.entity'
 
 @Injectable()
 export class AnswerService {
     @InjectRepository(AnswerEntity)
     private readonly answersRepository: Repository<AnswerEntity>
 
-    async create(payload: AnswerDto, user: PassportUserDto) {
-        const answer = this.answersRepository.create(payload)
+    async create(payload: CreateAnswerDto, user: PassportUserDto) {
+        const answer = this.answersRepository.create()
         answer.user = new UserEntity({ id: user.id })
+        answer.question = new QuestionEntity({ id: payload.question })
 
         try {
-            const newAnswer = await this.answersRepository.save(answer)
+            const answerCreated = await this.answersRepository.save(answer)
 
-            return new AnswerEntity(newAnswer)
+            return answerCreated
         } catch (error) {
             throw new BadRequestException(error.message)
         }
@@ -39,14 +41,14 @@ export class AnswerService {
             throw new NotFoundException()
         }
 
-        return new AnswerEntity(foundedAnswer)
+        return foundedAnswer
     }
 
     findAll() {
         return this.answersRepository.find()
     }
 
-    async update(id: string, payload: AnswerDto, user: PassportUserDto) {
+    async update(id: string, payload: CreateAnswerDto, user: PassportUserDto) {
         const answerChecked = await this.answersRepository.exists({
             where: { id }
         })
@@ -55,9 +57,10 @@ export class AnswerService {
             throw new NotFoundException()
         }
 
-        const answer = this.answersRepository.create(payload)
+        const answer = this.answersRepository.create()
 
         answer.user = new UserEntity({ id: user.id })
+        answer.question = new QuestionEntity({ id: payload.question })
 
         return this.answersRepository.save({ id, ...answer })
     }

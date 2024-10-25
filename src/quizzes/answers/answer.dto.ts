@@ -1,13 +1,14 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 import {
     IsString,
     MinLength,
     MaxLength,
     IsOptional,
-    IsBoolean
+    IsBoolean,
+    IsUUID
 } from 'class-validator'
 
-export class AnswerDto {
+export class CreateAnswerDto {
     @ApiProperty()
     @IsString()
     @MinLength(1)
@@ -18,4 +19,10 @@ export class AnswerDto {
     @IsOptional()
     @IsBoolean()
     isCorrect?: boolean
+
+    @ApiProperty({ description: 'Question UUID v4' })
+    @IsUUID(4)
+    question: string
 }
+
+export class UpdateQuestionDto extends PartialType(CreateAnswerDto) {}

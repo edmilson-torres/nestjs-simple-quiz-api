@@ -2,11 +2,11 @@ import {
     ValidatorConstraint,
     ValidatorConstraintInterface
 } from 'class-validator'
-import { AnswerDto } from './answer.dto'
+import { CreateAnswerDto } from './answer.dto'
 
 @ValidatorConstraint({ name: 'answersValidation', async: false })
 export class AnswersValidation implements ValidatorConstraintInterface {
-    validate(answers: AnswerDto[]) {
+    validate(answers: CreateAnswerDto[]) {
         if (Array.isArray(answers) && answers.length >= 2) {
             return answers.some((answer) => answer.isCorrect === true)
         }

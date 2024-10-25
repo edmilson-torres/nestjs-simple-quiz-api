@@ -17,7 +17,7 @@ import {
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 import { AnswerService } from '../answers/answers.service'
-import { AnswerDto } from './answer.dto'
+import { CreateAnswerDto } from './answer.dto'
 import { AuthGuardJwt } from '../../auth/guards/auth-jwt.guard'
 import { Roles } from '../../auth/decorators/role.decorator'
 import { RoleGuard } from '../../auth/guards/roles.guard'
@@ -41,7 +41,10 @@ export class AnswerController {
     @SerializeOptions({ groups: ['all'] })
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    create(@CurrentUser() user: PassportUserDto, @Body() payload: AnswerDto) {
+    create(
+        @CurrentUser() user: PassportUserDto,
+        @Body() payload: CreateAnswerDto
+    ) {
         return this.answerService.create(payload, user)
     }
 
@@ -64,7 +67,7 @@ export class AnswerController {
     update(
         @CurrentUser() user: PassportUserDto,
         @Param('id', ParseUUIDPipe) id: string,
-        @Body() payload: AnswerDto
+        @Body() payload: CreateAnswerDto
     ) {
         return this.answerService.update(id, payload, user)
     }
