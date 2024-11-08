@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module'
 import { AuthModule } from './auth/auth.module'
 import { HashModule } from './shared/hash/hash.module'
 import { QuizzesModule } from './quizzes/quizzes.module'
+import { LoggerMiddleware } from './logger.middleware'
 
 @Module({
     imports: [
@@ -45,4 +46,8 @@ import { QuizzesModule } from './quizzes/quizzes.module'
         }
     ]
 })
-export class AppModule {}
+export class AppModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(LoggerMiddleware).forRoutes('*')
+    }
+}
