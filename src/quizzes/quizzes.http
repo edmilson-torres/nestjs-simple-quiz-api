@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjY2YzODFhMy00MzEzLTQ3MzAtYjkxOC01ZmEwMjc1ZGQ5OTEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjk4NjIwMDYsImV4cCI6MTczMDI5NDAwNn0.q8mXA0U8X8JrOScIoIZtCSFkVrYqNJ7h1TxTp0X-RoE
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjY2YzODFhMy00MzEzLTQ3MzAtYjkxOC01ZmEwMjc1ZGQ5OTEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MzA2Mzk0NTUsImV4cCI6MTczMTA3MTQ1NX0.CgBUyYN1PMmvHRjaMoK3A3TUH2UP4ilNDZuGBKpcU_A
 
 ###
 
@@ -591,3 +591,12 @@ Authorization: Bearer {{authToken}}
       }
     ]
   }
+
+###
+
+GET http://localhost:3000/quizzes
+
+
+### 
+
+GET http://localhost:3000/quizzes/bfbd5553-583c-4ef2-80b4-07cec1a593ed
